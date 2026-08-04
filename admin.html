@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRIOT NOIR CMS</title>
+<style>
+:root{
+  --bg:#07070c;--panel:#0e0e17;--line:#23233a;--text:#ecebe4;--dim:#9a9ab2;
+  --cyan:#22e6f0;--magenta:#ff2e88;--acid:#d8ff3e;--red:#ff3b30;--amber:#ffb424;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:ui-monospace,Consolas,monospace}
+a{color:inherit;text-decoration:none}
+.shell{max-width:1320px;margin:0 auto;padding:18px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.top h1{margin:0;font-size:28px;letter-spacing:1px}
+.top .back{border:1px solid var(--line);padding:8px 10px;color:var(--dim)}
+.top .back:hover{border-color:var(--cyan);color:var(--cyan)}
+.card{background:var(--panel);border:1px solid var(--line);padding:16px}
+.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;margin-bottom:10px}
+label{font-size:11px;letter-spacing:1px;color:var(--dim)}
+input,textarea,select{width:100%;background:#080812;border:1px solid var(--line);color:var(--text);padding:9px;font:inherit}
+textarea{min-height:80px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+button{background:var(--magenta);border:none;color:#000;padding:9px 12px;font-weight:700;cursor:pointer}
+button:hover{background:var(--acid)}
+.btn-muted{background:transparent;border:1px solid var(--line);color:var(--dim)}
+.btn-muted:hover{border-color:var(--cyan);color:var(--cyan);background:transparent}
+.btn-warn{background:var(--amber)}
+.btn-danger{background:var(--red);color:#fff}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.hidden{display:none!important}
+.status{font-size:12px;color:var(--dim)}
+.list{display:grid;gap:8px;max-height:520px;overflow:auto;padding-right:2px}
+.item{border:1px solid var(--line);padding:10px;background:#0b0b15}
+.item h4{margin:0 0 6px;font-size:13px}
+.meta{font-size:10px;letter-spacing:1px;color:var(--dim);margin-bottom:8px}
+.item-actions{display:flex;gap:6px;flex-wrap:wrap}
+.item-actions button{padding:6px 8px;font-size:11px}
+.tag{display:inline-block;padding:2px 6px;font-size:10px;letter-spacing:1px;background:var(--line);margin-left:6px}
+.tag.published{background:var(--acid);color:#000}
+.tag.approved{background:var(--cyan);color:#000}
+.tag.in_review{background:var(--amber);color:#000}
+.tag.draft{background:var(--line);color:var(--text)}
+.tag.hidden{background:var(--red);color:#fff}
+.audit{font-size:11px;line-height:1.5}
+.audit b{color:var(--cyan)}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="top">
+    <h1>GRIOT NOIR CMS</h1>
+    <a class="back" href="/">← Back to site</a>
+  </div>
+
+  <section class="card" style="margin-top:16px">
+    <form id="loginForm" class="row3">
+      <div class="field">
+        <label for="loginEmail">Publisher email</label>
+        <input id="loginEmail" type="email" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password" required autocomplete="current-password">
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button type="submit">Sign in</button>
+      </div>
+    </form>
+    <div class="actions">
+      <span id="loginStatus" class="status">Sign in to access editorial workflow.</span>
+      <button id="logoutBtn" class="btn-muted hidden" type="button">Sign out</button>
+    </div>
+  </section>
+
+  <section id="cmsPanel" class="hidden">
+    <div class="grid">
+      <div class="card">
+        <h3 style="margin-top:0">Article editor</h3>
+        <form id="articleForm">
+          <input id="articleId" type="hidden">
+          <div class="row">
+            <div class="field">
+              <label for="articleSlug">Slug</label>
+              <input id="articleSlug" type="text" required>
+            </div>
+            <div class="field">
+              <label for="articleType">Type</label>
+              <select id="articleType">
+                <option value="article">article</option>
+                <option value="essay">essay</option>
+                <option value="gallery">gallery</option>
+                <option value="announcement">announcement</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="articleTitle">Title</label>
+            <input id="articleTitle" type="text" required>
+          </div>
+          <div class="field">
+            <label for="articleSubtitle">Subtitle</label>
+            <input id="articleSubtitle" type="text">
+          </div>
+          <div class="field">
+            <label for="articleSummary">Summary</label>
+            <textarea id="articleSummary"></textarea>
+          </div>
+          <div class="field">
+            <label for="articleBody">Full content</label>
+            <textarea id="articleBody" style="min-height:180px"></textarea>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="articleCategories">Categories (comma-separated)</label>
+              <input id="articleCategories" type="text" placeholder="Africa, Culture">
+            </div>
+            <div class="field">
+              <label for="articleTags">Tags (comma-separated)</label>
+              <input id="articleTags" type="text" placeholder="Front Page, Investigation">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="creatorName">Lead creator</label>
+              <input id="creatorName" type="text" placeholder="Adaeze Okonkwo">
+            </div>
+            <div class="field">
+              <label for="creatorRole">Creator role</label>
+              <input id="creatorRole" type="text" placeholder="Writer">
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="articleImageUrl">Image URL</label>
+              <input id="articleImageUrl" type="url">
+            </div>
+            <div class="field">
+              <label for="articleImageAlt">Image alt</label>
+              <input id="articleImageAlt" type="text">
+            </div>
+          </div>
+          <div class="row3">
+            <div class="field">
+              <label for="articleWeight">Editorial weight</label>
+              <input id="articleWeight" type="number" min="0" max="10000" value="50">
+            </div>
+            <div class="field">
+              <label for="articlePublishedAt">Publish at (ISO, optional)</label>
+              <input id="articlePublishedAt" type="text" placeholder="2026-08-04T05:00:00Z">
+            </div>
+            <div class="field">
+              <label for="articleStatus">Workflow state</label>
+              <select id="articleStatus" disabled>
+                <option value="draft">draft</option>
+                <option value="in_review">in_review</option>
+                <option value="approved">approved</option>
+                <option value="published">published</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <label><input id="articleFeatured" type="checkbox"> featured</label>
+            <label><input id="articlePinned" type="checkbox"> pinned</label>
+          </div>
+          <div class="actions" style="margin-top:12px">
+            <button type="submit">Save draft</button>
+            <button id="newArticleBtn" class="btn-muted" type="button">New draft</button>
+            <button id="submitReviewBtn" class="btn-warn" type="button">Submit review</button>
+            <button id="approveBtn" class="btn-muted" type="button">Approve</button>
+            <button id="publishBtn" class="btn-warn" type="button">Publish</button>
+            <button id="unpublishBtn" class="btn-muted" type="button">Move to draft</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="actions" style="justify-content:space-between">
+          <h3 style="margin:0">Articles</h3>
+          <button id="refreshArticlesBtn" class="btn-muted" type="button">Refresh</button>
+        </div>
+        <div id="articleList" class="list" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+      <div class="card">
+        <div class="actions" style="justify-content:space-between">
+          <h3 style="margin:0">Forum moderation</h3>
+          <button id="refreshForumBtn" class="btn-muted" type="button">Refresh</button>
+        </div>
+        <div id="forumList" class="list" style="margin-top:12px;max-height:360px"></div>
+      </div>
+
+      <div class="card">
+        <div class="actions" style="justify-content:space-between">
+          <h3 style="margin:0">Audit logs</h3>
+          <button id="refreshAuditBtn" class="btn-muted" type="button">Refresh</button>
+        </div>
+        <div id="auditList" class="list" style="margin-top:12px;max-height:360px"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script type="module" src="./js/admin.js"></script>
+</body>
+</html>
