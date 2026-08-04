@@ -17,6 +17,8 @@ const memberAuthBtn = document.getElementById("memberAuthBtn");
 const memberLogoutBtn = document.getElementById("memberLogoutBtn");
 const memberChip = document.getElementById("memberChip");
 const memberSavedBtn = document.getElementById("memberSavedBtn");
+const memberMenuToggleBtn = document.getElementById("memberMenuToggleBtn");
+const memberMenuPanel = document.getElementById("memberMenuPanel");
 
 const savedOverlay = document.getElementById("savedOverlay");
 const savedCloseBtn = document.getElementById("savedCloseBtn");
@@ -54,6 +56,7 @@ let memberEnabled = false;
 let memberClient = null;
 let memberOfflineReason = "";
 let memberConfigSource = "";
+let memberMenuOpen = false;
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -91,6 +94,14 @@ function setAuthMessage(message, isError) {
   authMessage.style.color = isError ? "var(--red)" : "var(--dim)";
 }
 
+function setMemberMenuOpen(isOpen) {
+  if (!memberMenuToggleBtn || !memberMenuPanel) return;
+  memberMenuOpen = !!isOpen;
+  memberMenuPanel.classList.toggle("gone", !memberMenuOpen);
+  memberMenuToggleBtn.classList.toggle("active", memberMenuOpen);
+  memberMenuToggleBtn.setAttribute("aria-expanded", memberMenuOpen ? "true" : "false");
+}
+
 function setAuthMode(nextMode) {
   authMode = nextMode === "signup" ? "signup" : "signin";
   if (authMode === "signup") {
@@ -112,6 +123,9 @@ function getOfflineReason() {
 }
 
 function renderMemberControls() {
+  if (memberMenuToggleBtn) {
+    memberMenuToggleBtn.disabled = memberBooting;
+  }
   if (memberBooting) {
     memberAuthBtn.textContent = "MEMBERS ...";
     memberAuthBtn.disabled = true;
@@ -449,6 +463,7 @@ async function initializeMemberClient() {
 
 memberAuthBtn.addEventListener("click", function () {
   if (memberBooting) return;
+  setMemberMenuOpen(false);
   setAuthMessage("", false);
   if (!memberEnabled) {
     showOverlay(authOverlay);
@@ -460,6 +475,7 @@ memberAuthBtn.addEventListener("click", function () {
 
 memberLogoutBtn.addEventListener("click", async function () {
   if (!memberEnabled || !memberClient) return;
+  setMemberMenuOpen(false);
   const { error } = await memberClient.auth.signOut();
   if (error) {
     handleAuthError(error, "Logout failed.");
@@ -475,9 +491,19 @@ memberLogoutBtn.addEventListener("click", async function () {
 
 memberSavedBtn.addEventListener("click", function () {
   if (memberBooting) return;
+  setMemberMenuOpen(false);
   renderSavedList();
   showOverlay(savedOverlay);
 });
+
+if (memberMenuToggleBtn) {
+  memberMenuToggleBtn.addEventListener("click", function (ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (memberBooting) return;
+    setMemberMenuOpen(!memberMenuOpen);
+  });
+}
 
 savedCloseBtn.addEventListener("click", function () {
   hideOverlay(savedOverlay);
@@ -506,6 +532,13 @@ authCloseBtn.addEventListener("click", function () {
 
 authOverlay.addEventListener("click", function (ev) {
   if (ev.target === authOverlay) hideOverlay(authOverlay);
+});
+
+document.addEventListener("click", function (ev) {
+  if (!memberMenuOpen || !memberMenuToggleBtn || !memberMenuPanel) return;
+  const target = ev.target;
+  if (memberMenuToggleBtn.contains(target) || memberMenuPanel.contains(target)) return;
+  setMemberMenuOpen(false);
 });
 
 authModeToggleBtn.addEventListener("click", function () {
@@ -661,6 +694,12 @@ readerCommentForm.addEventListener("submit", async function (ev) {
   }
 });
 
+document.addEventListener("keydown", function (ev) {
+  if (ev.key === "Escape" && memberMenuOpen) {
+    setMemberMenuOpen(false);
+  }
+});
+
 setAuthMode("signin");
 renderMemberControls();
 decorateFeedBookmarkButtons();
@@ -684,6 +723,7 @@ readerCommentList.innerHTML = '<div class="meta">Open a dispatch to view comment
     }
   } finally {
     memberBooting = false;
+    setMemberMenuOpen(false);
     renderMemberControls();
     decorateFeedBookmarkButtons();
     syncBookmarkButtons();

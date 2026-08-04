@@ -90,10 +90,17 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .nav-tools{margin-left:auto;display:flex;align-items:center;gap:8px;padding:8px 0;flex:0 0 auto}
 .nav-tools .admin-link{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
 .nav-tools .admin-link:hover{border-color:var(--cyan);color:var(--cyan)}
-.nav-tools .member-btn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
-.nav-tools .member-btn:hover{border-color:var(--acid);color:var(--acid)}
-.nav-tools .member-btn.active{border-color:var(--acid);color:#000;background:var(--acid)}
-.nav-tools .member-chip{font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--cyan);border:1px solid var(--line);padding:7px 10px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.member-btn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
+.member-btn:hover{border-color:var(--acid);color:var(--acid)}
+.member-btn.active{border-color:var(--acid);color:#000;background:var(--acid)}
+.member-chip{font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--cyan);border:1px solid var(--line);padding:7px 10px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.member-menu{position:fixed;top:10px;right:10px;z-index:72;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.member-menu-toggle{display:flex;align-items:center;gap:8px;background:rgba(7,7,12,.94);border:1px solid var(--line);color:var(--text);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:8px 10px;transition:.2s}
+.member-menu-toggle .icon{width:9px;height:9px;border-radius:50%;border:1px solid var(--cyan);box-shadow:0 0 8px rgba(34,230,240,.4)}
+.member-menu-toggle:hover,.member-menu-toggle.active{border-color:var(--cyan);color:var(--cyan)}
+.member-menu-panel{min-width:210px;background:rgba(7,7,12,.96);border:1px solid var(--line);padding:8px;display:grid;gap:6px;backdrop-filter:blur(8px)}
+.member-menu-panel .member-chip{max-width:none}
+@media(max-width:760px){.member-menu{top:6px;right:6px}.member-menu-panel{min-width:180px}}
 #clearFilter{display:none;background:var(--acid);color:#000;border:none;font-family:var(--black);font-size:9px;letter-spacing:1px;padding:6px 8px;transform:rotate(-2deg)}
 #clearFilter.show{display:inline-block}
 #siteSearch{background:#0a0a12;border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:12px;padding:8px 10px;width:clamp(104px,26vw,170px);outline:none;transition:.2s}
@@ -374,6 +381,19 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
   </div>
 </header>
 
+<div class="member-menu" id="memberMenu">
+  <button class="member-menu-toggle" id="memberMenuToggleBtn" type="button" aria-expanded="false" aria-controls="memberMenuPanel">
+    <span class="icon" aria-hidden="true"></span>
+    ACCOUNT
+  </button>
+  <div class="member-menu-panel gone" id="memberMenuPanel">
+    <span class="member-chip gone" id="memberChip"></span>
+    <button class="member-btn" id="memberSavedBtn" type="button">SAVED</button>
+    <button class="member-btn" id="memberAuthBtn" type="button">SIGN IN</button>
+    <button class="member-btn gone" id="memberLogoutBtn" type="button">LOG OUT</button>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="nav-in">
@@ -387,10 +407,6 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <button class="cat-btn" data-cat="opinion">OPINION</button>
     <div class="nav-tools">
       <a class="admin-link" href="/admin">CMS</a>
-      <button class="member-btn" id="memberSavedBtn" type="button">SAVED</button>
-      <span class="member-chip gone" id="memberChip"></span>
-      <button class="member-btn" id="memberAuthBtn" type="button">SIGN IN</button>
-      <button class="member-btn gone" id="memberLogoutBtn" type="button">LOG OUT</button>
       <button id="clearFilter">✕ CLEAR FILTER</button>
       <input id="siteSearch" type="search" placeholder="search the wire…" aria-label="search stories">
     </div>
