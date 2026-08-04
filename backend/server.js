@@ -12,6 +12,7 @@ const DB_PATH = path.join(DATA_DIR, "griot.sqlite");
 const LOCAL_WIRE_PATH = path.join(ROOT_DIR, "data", "local-wire.json");
 
 const PORT = Number(process.env.PORT || 4174);
+const HOST = process.env.HOST || "127.0.0.1";
 const SUPABASE_URL = process.env.SUPABASE_URL || "";
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
@@ -1586,8 +1587,8 @@ app.get(/^(?!\/api\/).*/, (req, res) => {
 storage
   .init()
   .then(() => {
-    app.listen(PORT, "127.0.0.1", () => {
-      console.log(`GRIOT NOIR API listening at http://127.0.0.1:${PORT} (storage: ${storage.mode})`);
+    app.listen(PORT, HOST, () => {
+      console.log(`GRIOT NOIR API listening at http://${HOST}:${PORT} (storage: ${storage.mode})`);
     });
   })
   .catch((error) => {

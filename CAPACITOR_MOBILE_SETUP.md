@@ -14,6 +14,7 @@ Capacitor reads `CAP_SERVER_URL` from your shell or `.env`.
 
 - If `CAP_SERVER_URL` is set, the mobile app loads that hosted URL.
 - If `CAP_SERVER_URL` is empty, the app uses bundled web assets from `mobile-web/`.
+- `HOST` controls backend binding (`127.0.0.1` for local-only, `0.0.0.0` for LAN devices).
 
 PowerShell:
 
@@ -55,6 +56,16 @@ npm run cap:open:android
 npm run cap:open:ios
 ```
 
+5. Set target networking mode:
+
+```bash
+# Real phone on same Wi-Fi/LAN (auto-detects local IP)
+npm run cap:target:lan
+
+# Android emulator
+npm run cap:target:emulator
+```
+
 ## Build and test
 
 - Android: run on emulator/device from Android Studio after `cap:sync`.
@@ -64,5 +75,14 @@ npm run cap:open:ios
 ## Launch splash behavior
 
 - Native launch splash is configured in `capacitor.config.js` (`plugins.SplashScreen`).
-- `js/mobile-splash.js` hides the native splash once the web page fully loads on native platforms.
+- Splash auto-hides after a bounded duration, so an unreachable hosted URL does not trap users on an infinite loading screen.
+- `js/mobile-splash.js` still requests early hide once the web page is fully loaded on native platforms.
 - If you tune splash visuals or timing, run `npm run cap:sync` before rebuilding/running native apps.
+
+## Real-phone checklist (local backend)
+
+1. Run `npm run cap:target:lan`.
+2. Run `npm run dev`.
+3. Run `npm run cap:sync`.
+4. Rebuild/reinstall app on the phone.
+5. Ensure Windows firewall allows inbound TCP on your `PORT` (default `4174`).

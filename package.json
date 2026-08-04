@@ -7,6 +7,8 @@
     "dev": "node backend/server.js",
     "smoke:staging": "node scripts/smoke-test.js",
     "test": "echo \"No test suite configured\"",
+    "cap:target:lan": "node scripts/set-mobile-lan-env.js",
+    "cap:target:emulator": "node scripts/set-mobile-emulator-env.js",
     "cap:prepare:web": "node scripts/prepare-mobile-web.js",
     "cap:copy": "npm run cap:prepare:web && npx cap copy",
     "cap:sync": "npm run cap:prepare:web && npx cap sync",

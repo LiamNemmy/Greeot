@@ -12,7 +12,8 @@ const config = {
   webDir: "mobile-web",
   plugins: {
     SplashScreen: {
-      launchAutoHide: false,
+      launchAutoHide: true,
+      launchShowDuration: 5000,
       backgroundColor: "#0b0b0bff",
       androidSplashResourceName: "splash",
       androidScaleType: "CENTER_CROP",
