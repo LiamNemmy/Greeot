@@ -17,6 +17,8 @@ const articleBody = document.getElementById("articleBody");
 const articleType = document.getElementById("articleType");
 const articleCategories = document.getElementById("articleCategories");
 const articleTags = document.getElementById("articleTags");
+const categoryPicker = document.getElementById("categoryPicker");
+const tagPicker = document.getElementById("tagPicker");
 const creatorName = document.getElementById("creatorName");
 const creatorRole = document.getElementById("creatorRole");
 const articleImageUrl = document.getElementById("articleImageUrl");
@@ -45,6 +47,9 @@ let articles = [];
 let forumPosts = [];
 let auditLogs = [];
 
+const DEFAULT_CATEGORIES = ["Africa", "World", "Power", "Economy", "Tech", "Culture", "Opinion"];
+const DEFAULT_TAGS = ["Front Page", "Desk", "Trending", "Investigation", "Frequency", "Op-Ed"];
+
 function setStatus(message, isError = false) {
   loginStatus.textContent = message;
   loginStatus.style.color = isError ? "var(--red)" : "var(--dim)";
@@ -71,6 +76,66 @@ function loadSession() {
 function toCommaList(value) {
   if (!Array.isArray(value)) return "";
   return value.join(", ");
+}
+
+function splitCommaInput(value) {
+  return String(value || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function normalizeToken(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function escapeHtml(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, (c) => {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+function collectTaxonomyOptions(fieldName, fallbackValues) {
+  const seen = new Map();
+  fallbackValues.forEach((value) => {
+    const normalized = normalizeToken(value);
+    if (!normalized) return;
+    if (!seen.has(normalized)) seen.set(normalized, String(value).trim());
+  });
+  articles.forEach((article) => {
+    const values = Array.isArray(article[fieldName]) ? article[fieldName] : [];
+    values.forEach((value) => {
+      const normalized = normalizeToken(value);
+      if (!normalized) return;
+      if (!seen.has(normalized)) seen.set(normalized, String(value).trim());
+    });
+  });
+  return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
+}
+
+function toggleCommaToken(inputEl, token) {
+  const values = splitCommaInput(inputEl.value);
+  const normalizedToken = normalizeToken(token);
+  const index = values.findIndex((value) => normalizeToken(value) === normalizedToken);
+  if (index >= 0) values.splice(index, 1);
+  else values.push(token);
+  inputEl.value = values.join(", ");
+}
+
+function renderTaxonomyPicker(targetEl, inputEl, options) {
+  if (!targetEl || !inputEl) return;
+  const selected = new Set(splitCommaInput(inputEl.value).map(normalizeToken));
+  targetEl.innerHTML = options
+    .map((option) => {
+      const activeClass = selected.has(normalizeToken(option)) ? " active" : "";
+      return `<button type="button" class="tax-pill${activeClass}" data-tax-value="${escapeHtml(option)}">${escapeHtml(option)}</button>`;
+    })
+    .join("");
+}
+
+function renderTaxonomyPickers() {
+  renderTaxonomyPicker(categoryPicker, articleCategories, collectTaxonomyOptions("categories", DEFAULT_CATEGORIES));
+  renderTaxonomyPicker(tagPicker, articleTags, collectTaxonomyOptions("tags", DEFAULT_TAGS));
 }
 
 function statusTagClass(status) {
@@ -116,6 +181,7 @@ function resetArticleForm() {
   articleWeight.value = "50";
   articleFeatured.checked = false;
   articlePinned.checked = false;
+  renderTaxonomyPickers();
 }
 
 function hydrateArticleForm(article) {
@@ -137,6 +203,7 @@ function hydrateArticleForm(article) {
   articleStatus.value = article.status || "draft";
   articleFeatured.checked = !!article.featured;
   articlePinned.checked = !!article.pinned;
+  renderTaxonomyPickers();
 }
 
 async function api(path, options = {}) {
@@ -229,6 +296,7 @@ async function loadAdminData() {
   renderArticles();
   renderForum();
   renderAudit();
+  renderTaxonomyPickers();
 }
 
 async function refreshSessionUser() {
@@ -296,6 +364,7 @@ logoutBtn.addEventListener("click", () => {
   forumList.innerHTML = "";
   auditList.innerHTML = "";
   resetArticleForm();
+  renderTaxonomyPickers();
   setStatus("Signed out.");
 });
 
@@ -427,8 +496,34 @@ refreshAuditBtn.addEventListener("click", async () => {
   }
 });
 
+if (categoryPicker) {
+  categoryPicker.addEventListener("click", (ev) => {
+    const button = ev.target.closest("button[data-tax-value]");
+    if (!button) return;
+    const value = button.getAttribute("data-tax-value");
+    if (!value) return;
+    toggleCommaToken(articleCategories, value);
+    renderTaxonomyPickers();
+  });
+}
+
+if (tagPicker) {
+  tagPicker.addEventListener("click", (ev) => {
+    const button = ev.target.closest("button[data-tax-value]");
+    if (!button) return;
+    const value = button.getAttribute("data-tax-value");
+    if (!value) return;
+    toggleCommaToken(articleTags, value);
+    renderTaxonomyPickers();
+  });
+}
+
+articleCategories.addEventListener("input", renderTaxonomyPickers);
+articleTags.addEventListener("input", renderTaxonomyPickers);
+
 (async function boot() {
   resetArticleForm();
+  renderTaxonomyPickers();
   const existing = loadSession();
   if (!existing) {
     setAuthenticatedUi(false);

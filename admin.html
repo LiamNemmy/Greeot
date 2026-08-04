@@ -50,6 +50,11 @@ button:hover{background:var(--acid)}
 .tag.hidden{background:var(--red);color:#fff}
 .audit{font-size:11px;line-height:1.5}
 .audit b{color:var(--cyan)}
+.taxonomy-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tax-pill{background:#080812;border:1px solid var(--line);color:var(--dim);padding:5px 8px;font-size:11px;letter-spacing:.3px}
+.tax-pill:hover{border-color:var(--cyan);color:var(--cyan);background:#080812}
+.tax-pill.active{background:var(--acid);border-color:var(--acid);color:#000}
+.tax-note{margin-top:6px;font-size:10px;letter-spacing:.4px;color:var(--dim)}
 </style>
 </head>
 <body>
@@ -121,10 +126,14 @@ button:hover{background:var(--acid)}
             <div class="field">
               <label for="articleCategories">Categories (comma-separated)</label>
               <input id="articleCategories" type="text" placeholder="Africa, Culture">
+              <div id="categoryPicker" class="taxonomy-picker"></div>
+              <div class="tax-note">Click to add/remove categories.</div>
             </div>
             <div class="field">
               <label for="articleTags">Tags (comma-separated)</label>
               <input id="articleTags" type="text" placeholder="Front Page, Investigation">
+              <div id="tagPicker" class="taxonomy-picker"></div>
+              <div class="tax-note">Click to add/remove tags.</div>
             </div>
           </div>
           <div class="row">
