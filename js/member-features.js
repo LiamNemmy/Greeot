@@ -41,20 +41,19 @@ if (
   throw new Error("Member feature DOM elements are missing from index.html.");
 }
 
-const hasSupabaseConfig = !!(GRIOT_CONFIG.SUPABASE_URL && GRIOT_CONFIG.SUPABASE_ANON_KEY);
 const canCreateClient = !!(window.supabase && typeof window.supabase.createClient === "function");
-const memberEnabled = hasSupabaseConfig && canCreateClient;
-const memberClient = memberEnabled
-  ? window.supabase.createClient(GRIOT_CONFIG.SUPABASE_URL, GRIOT_CONFIG.SUPABASE_ANON_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-    })
-  : null;
 
 let authMode = "signin";
 let sessionUser = null;
 let currentReaderArticleKey = "";
 let bookmarks = new Set();
 let feedLookup = Object.create(null);
+
+let memberBooting = true;
+let memberEnabled = false;
+let memberClient = null;
+let memberOfflineReason = "";
+let memberConfigSource = "";
 
 function esc(value) {
   return String(value == null ? "" : value)
@@ -107,11 +106,25 @@ function setAuthMode(nextMode) {
   authPassword.minLength = 8;
 }
 
+function getOfflineReason() {
+  if (memberOfflineReason) return memberOfflineReason;
+  return "Members are offline. Configure Supabase browser auth settings and reload.";
+}
+
 function renderMemberControls() {
-  if (!memberEnabled) {
-    memberAuthBtn.textContent = "MEMBERS OFFLINE";
+  if (memberBooting) {
+    memberAuthBtn.textContent = "MEMBERS ...";
     memberAuthBtn.disabled = true;
     memberSavedBtn.disabled = true;
+    memberLogoutBtn.classList.add("gone");
+    memberChip.classList.add("gone");
+    return;
+  }
+
+  if (!memberEnabled) {
+    memberAuthBtn.textContent = "MEMBERS OFFLINE";
+    memberAuthBtn.disabled = false;
+    memberSavedBtn.disabled = false;
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
     return;
@@ -176,6 +189,11 @@ function syncBookmarkButtons() {
 }
 
 function renderSavedList() {
+  if (!memberEnabled) {
+    savedMeta.textContent = getOfflineReason();
+    savedList.innerHTML = "";
+    return;
+  }
   if (!sessionUser) {
     savedMeta.textContent = "Sign in to save and revisit dispatches.";
     savedList.innerHTML = "";
@@ -211,7 +229,7 @@ function renderSavedList() {
 }
 
 async function ensureMemberProfile() {
-  if (!sessionUser) return;
+  if (!sessionUser || !memberClient) return;
   const payload = {
     user_id: sessionUser.id,
     display_name: articleHandleFromUser(sessionUser).slice(1)
@@ -223,7 +241,7 @@ async function ensureMemberProfile() {
 }
 
 async function loadBookmarks() {
-  if (!sessionUser) {
+  if (!sessionUser || !memberClient) {
     bookmarks = new Set();
     return;
   }
@@ -242,7 +260,7 @@ async function loadBookmarks() {
 
 function updateCommentComposer() {
   if (!memberEnabled) {
-    readerCommentsNote.textContent = "Member comments are unavailable until Supabase browser keys are configured.";
+    readerCommentsNote.textContent = getOfflineReason();
     readerCommentForm.classList.add("gone");
     return;
   }
@@ -285,8 +303,8 @@ async function loadComments(articleKey) {
     readerCommentList.innerHTML = '<div class="meta">Open a dispatch to view comments.</div>';
     return;
   }
-  if (!memberEnabled) {
-    readerCommentList.innerHTML = '<div class="meta">Comments require Supabase browser auth configuration.</div>';
+  if (!memberEnabled || !memberClient) {
+    readerCommentList.innerHTML = `<div class="meta">${esc(getOfflineReason())}</div>`;
     return;
   }
   const { data, error } = await memberClient
@@ -296,7 +314,6 @@ async function loadComments(articleKey) {
     .eq("status", "approved")
     .order("created_at", { ascending: false })
     .limit(100);
-
   if (error) {
     throw new Error(`Comments query failed: ${error.message}`);
   }
@@ -305,7 +322,7 @@ async function loadComments(articleKey) {
 
 async function refreshMemberState() {
   renderMemberControls();
-  if (!memberEnabled) {
+  if (!memberEnabled || !memberClient) {
     syncBookmarkButtons();
     updateCommentComposer();
     renderSavedList();
@@ -336,7 +353,9 @@ async function refreshMemberState() {
 }
 
 async function toggleBookmark(articleKey) {
-  if (!memberEnabled) {
+  if (!memberEnabled || !memberClient) {
+    showOverlay(authOverlay);
+    setAuthMessage(getOfflineReason(), true);
     return;
   }
   if (!sessionUser) {
@@ -368,14 +387,79 @@ function handleAuthError(error, fallback) {
   setAuthMessage(message, true);
 }
 
+async function resolveSupabaseConfig() {
+  const directUrl = String(GRIOT_CONFIG.SUPABASE_URL || "").trim();
+  const directKey = String(GRIOT_CONFIG.SUPABASE_ANON_KEY || "").trim();
+  if (directUrl && directKey) {
+    memberConfigSource = "griot-config.js";
+    return { url: directUrl, anonKey: directKey };
+  }
+
+  try {
+    const response = await fetch("/api/public-config", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Public config request failed: ${response.status} ${response.statusText}`);
+    }
+    const payload = await response.json();
+    const apiUrl = String((payload && (payload.supabase_url || payload.supabaseUrl)) || "").trim();
+    const apiKey = String((payload && (payload.supabase_anon_key || payload.supabaseAnonKey)) || "").trim();
+    if (apiUrl && apiKey) {
+      memberConfigSource = "backend /api/public-config";
+      return { url: apiUrl, anonKey: apiKey };
+    }
+  } catch (error) {
+    if (window.console) {
+      console.warn("GRIOT NOIR: Failed reading /api/public-config for member auth.", error);
+    }
+  }
+
+  memberConfigSource = "";
+  return null;
+}
+
+async function initializeMemberClient() {
+  if (!canCreateClient) {
+    memberOfflineReason = "Supabase browser SDK is unavailable on this page.";
+    return;
+  }
+
+  const config = await resolveSupabaseConfig();
+  if (!config) {
+    memberOfflineReason = "No Supabase member config found. Set browser keys or serve /api/public-config.";
+    return;
+  }
+
+  memberClient = window.supabase.createClient(config.url, config.anonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+  memberEnabled = true;
+  memberOfflineReason = "";
+
+  memberClient.auth.onAuthStateChange(async function (_event, session) {
+    sessionUser = session && session.user ? session.user : null;
+    try {
+      await refreshMemberState();
+    } catch (error) {
+      if (window.console) {
+        console.warn("GRIOT NOIR: Auth state refresh failed.", error);
+      }
+    }
+  });
+}
+
 memberAuthBtn.addEventListener("click", function () {
-  if (!memberEnabled) return;
+  if (memberBooting) return;
   setAuthMessage("", false);
+  if (!memberEnabled) {
+    showOverlay(authOverlay);
+    setAuthMessage(getOfflineReason(), true);
+    return;
+  }
   showOverlay(authOverlay);
 });
 
 memberLogoutBtn.addEventListener("click", async function () {
-  if (!memberEnabled) return;
+  if (!memberEnabled || !memberClient) return;
   const { error } = await memberClient.auth.signOut();
   if (error) {
     handleAuthError(error, "Logout failed.");
@@ -390,7 +474,7 @@ memberLogoutBtn.addEventListener("click", async function () {
 });
 
 memberSavedBtn.addEventListener("click", function () {
-  if (!memberEnabled) return;
+  if (memberBooting) return;
   renderSavedList();
   showOverlay(savedOverlay);
 });
@@ -430,7 +514,10 @@ authModeToggleBtn.addEventListener("click", function () {
 });
 
 authResetBtn.addEventListener("click", async function () {
-  if (!memberEnabled) return;
+  if (!memberEnabled || !memberClient) {
+    setAuthMessage(getOfflineReason(), true);
+    return;
+  }
   const email = String(authEmail.value || "").trim();
   if (!email) {
     setAuthMessage("Enter your email first, then click reset.", true);
@@ -448,7 +535,10 @@ authResetBtn.addEventListener("click", async function () {
 
 authForm.addEventListener("submit", async function (ev) {
   ev.preventDefault();
-  if (!memberEnabled) return;
+  if (!memberEnabled || !memberClient) {
+    setAuthMessage(getOfflineReason(), true);
+    return;
+  }
   const email = String(authEmail.value || "").trim().toLowerCase();
   const password = String(authPassword.value || "");
   if (!email || !password) {
@@ -532,7 +622,11 @@ document.addEventListener("griot:reader-close", function () {
 
 readerCommentForm.addEventListener("submit", async function (ev) {
   ev.preventDefault();
-  if (!memberEnabled) return;
+  if (!memberEnabled || !memberClient) {
+    setAuthMessage(getOfflineReason(), true);
+    showOverlay(authOverlay);
+    return;
+  }
   if (!sessionUser) {
     showOverlay(authOverlay);
     setAuthMessage("Sign in first to comment.", false);
@@ -567,19 +661,6 @@ readerCommentForm.addEventListener("submit", async function (ev) {
   }
 });
 
-if (memberEnabled) {
-  memberClient.auth.onAuthStateChange(async function (_event, session) {
-    sessionUser = session && session.user ? session.user : null;
-    try {
-      await refreshMemberState();
-    } catch (error) {
-      if (window.console) {
-        console.warn("GRIOT NOIR: Auth state refresh failed.", error);
-      }
-    }
-  });
-}
-
 setAuthMode("signin");
 renderMemberControls();
 decorateFeedBookmarkButtons();
@@ -588,15 +669,28 @@ updateCommentComposer();
 readerCommentList.innerHTML = '<div class="meta">Open a dispatch to view comments.</div>';
 
 (async function bootMemberFeatures() {
-  if (!memberEnabled) {
-    savedMeta.textContent = "Members are offline. Add SUPABASE_URL and SUPABASE_ANON_KEY in griot-config.js.";
-    return;
-  }
   try {
-    await refreshMemberState();
+    await initializeMemberClient();
+    if (memberEnabled) {
+      await refreshMemberState();
+    } else {
+      bookmarks = new Set();
+    }
   } catch (error) {
+    memberEnabled = false;
+    memberOfflineReason = "Member bootstrap failed. Check Supabase config and reload.";
     if (window.console) {
       console.warn("GRIOT NOIR: Member bootstrap failed.", error);
+    }
+  } finally {
+    memberBooting = false;
+    renderMemberControls();
+    decorateFeedBookmarkButtons();
+    syncBookmarkButtons();
+    updateCommentComposer();
+    renderSavedList();
+    if (!memberEnabled && window.console) {
+      console.warn(`GRIOT NOIR: member mode offline (${memberConfigSource || "no config source"}).`);
     }
   }
 })();

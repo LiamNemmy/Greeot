@@ -1341,6 +1341,14 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true, service: "griot-noir-api", storage: storage.mode });
 });
 
+app.get("/api/public-config", (req, res) => {
+  res.json({
+    supabase_url: SUPABASE_URL || "",
+    supabase_anon_key: SUPABASE_ANON_KEY || "",
+    members_enabled: !!(SUPABASE_URL && SUPABASE_ANON_KEY)
+  });
+});
+
 app.get("/api/articles", async (req, res) => {
   try {
     const items = await storage.listPublicArticles();
