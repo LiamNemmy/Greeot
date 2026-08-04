@@ -17,6 +17,8 @@ const memberAuthBtn = document.getElementById("memberAuthBtn");
 const memberLogoutBtn = document.getElementById("memberLogoutBtn");
 const memberChip = document.getElementById("memberChip");
 const memberSavedBtn = document.getElementById("memberSavedBtn");
+const memberAccountIconBtn = document.getElementById("memberAccountIconBtn");
+const memberFeatureIconBtn = document.getElementById("memberFeatureIconBtn");
 
 const savedOverlay = document.getElementById("savedOverlay");
 const savedCloseBtn = document.getElementById("savedCloseBtn");
@@ -116,6 +118,8 @@ function renderMemberControls() {
     memberAuthBtn.textContent = "MEMBERS ...";
     memberAuthBtn.disabled = true;
     memberSavedBtn.disabled = true;
+    if (memberAccountIconBtn) memberAccountIconBtn.disabled = true;
+    if (memberFeatureIconBtn) memberFeatureIconBtn.disabled = true;
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
     return;
@@ -125,6 +129,11 @@ function renderMemberControls() {
     memberAuthBtn.textContent = "MEMBERS OFFLINE";
     memberAuthBtn.disabled = false;
     memberSavedBtn.disabled = false;
+    if (memberAccountIconBtn) {
+      memberAccountIconBtn.disabled = false;
+      memberAccountIconBtn.classList.remove("active");
+    }
+    if (memberFeatureIconBtn) memberFeatureIconBtn.disabled = false;
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
     return;
@@ -132,14 +141,18 @@ function renderMemberControls() {
 
   memberAuthBtn.disabled = false;
   memberSavedBtn.disabled = false;
+  if (memberAccountIconBtn) memberAccountIconBtn.disabled = false;
+  if (memberFeatureIconBtn) memberFeatureIconBtn.disabled = false;
   if (!sessionUser) {
     memberAuthBtn.textContent = "SIGN IN";
+    if (memberAccountIconBtn) memberAccountIconBtn.classList.remove("active");
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
     return;
   }
 
   memberAuthBtn.textContent = "ACCOUNT";
+  if (memberAccountIconBtn) memberAccountIconBtn.classList.add("active");
   memberLogoutBtn.classList.remove("gone");
   memberChip.classList.remove("gone");
   memberChip.textContent = articleHandleFromUser(sessionUser);
@@ -478,6 +491,18 @@ memberSavedBtn.addEventListener("click", function () {
   renderSavedList();
   showOverlay(savedOverlay);
 });
+
+if (memberAccountIconBtn) {
+  memberAccountIconBtn.addEventListener("click", function () {
+    memberAuthBtn.click();
+  });
+}
+
+if (memberFeatureIconBtn) {
+  memberFeatureIconBtn.addEventListener("click", function () {
+    memberSavedBtn.click();
+  });
+}
 
 savedCloseBtn.addEventListener("click", function () {
   hideOverlay(savedOverlay);

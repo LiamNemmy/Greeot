@@ -65,6 +65,10 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 @keyframes flick{0%,6%,8%,100%{opacity:1}7%{opacity:.2}42%{opacity:1}43%{opacity:.3}44%{opacity:1}}
 .brand .tag{font-family:var(--marker);color:var(--acid);font-size:clamp(12px,2.8vw,15px);transform:rotate(-2deg);display:inline-block;margin-top:6px}
 .spray{position:absolute;pointer-events:none;opacity:.5;z-index:-1;width:clamp(90px,14vw,180px);left:-20px;top:-16px;color:var(--magenta)}
+.mast-right{display:flex;align-items:flex-end;gap:clamp(10px,2vw,16px)}
+.home-logo{width:clamp(64px,9vw,102px);aspect-ratio:1/1;display:block;flex:0 0 auto;border:1px solid var(--line);background:#0b0b0b;padding:4px;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:transform .2s,border-color .2s,box-shadow .2s}
+.home-logo img{width:100%;height:100%;object-fit:cover}
+.home-logo:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 0 14px rgba(34,230,240,.25)}
 .mast-meta{text-align:right;font-size:clamp(9px,1.5vw,11px);letter-spacing:1px;color:var(--dim)}
 .mast-meta .clocks{display:flex;gap:clamp(8px,1.8vw,14px);justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
 .mast-meta .clocks b{color:var(--cyan);font-weight:400}
@@ -90,6 +94,10 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .nav-tools{margin-left:auto;display:flex;align-items:center;gap:8px;padding:8px 0;flex:0 0 auto}
 .nav-tools .admin-link{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
 .nav-tools .admin-link:hover{border-color:var(--cyan);color:var(--cyan)}
+.nav-tools .icon-tool{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line);color:var(--dim);transition:.2s;flex:0 0 auto;padding:0}
+.nav-tools .icon-tool svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-tools .icon-tool:hover{border-color:var(--acid);color:var(--acid)}
+.nav-tools .icon-tool.active{border-color:var(--acid);color:#000;background:var(--acid)}
 .nav-tools .member-btn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
 .nav-tools .member-btn:hover{border-color:var(--acid);color:var(--acid)}
 .nav-tools .member-btn.active{border-color:var(--acid);color:#000;background:var(--acid)}
@@ -317,7 +325,8 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 @media(max-width:600px){
   .masthead{align-items:flex-start}
-  .mast-meta{text-align:left;width:100%}
+  .mast-right{width:100%;justify-content:space-between;align-items:flex-start}
+  .mast-meta{text-align:left;flex:1;min-width:0}
   .mast-meta .clocks,.feed-status{justify-content:flex-start}
   .hero{min-height:clamp(340px,86vw,440px)}
   .sticker{padding:4px 9px}
@@ -361,16 +370,21 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <h1>The E. African Bazaar</h1>
     <span class="tag">The world, from Africa</span>
   </div>
-  <div class="mast-meta">
-    <div class="edition">TUESDAY EDITION // № 407</div>
-    <div class="clocks">
-      <span>LAGOS <b id="clockLagos">--:--</b></span>
-      <span>CAIRO <b id="clockCairo">--:--</b></span>
-      <span>NAIROBI <b id="clockNairobi">--:--</b></span>
-      <span>JOHANNESBURG <b id="clockJohannesburg">--:--</b></span>
+  <div class="mast-right">
+    <a class="home-logo" href="/" aria-label="Home">
+      <img src="https://hfbdphfdxfgwmviogoif.supabase.co/storage/v1/object/public/The%20Dogon/cover%20queen.png" alt="The E. African Bazaar logo">
+    </a>
+    <div class="mast-meta">
+      <div class="edition">TUESDAY EDITION // № 407</div>
+      <div class="clocks">
+        <span>LAGOS <b id="clockLagos">--:--</b></span>
+        <span>CAIRO <b id="clockCairo">--:--</b></span>
+        <span>NAIROBI <b id="clockNairobi">--:--</b></span>
+        <span>JOHANNESBURG <b id="clockJohannesburg">--:--</b></span>
+      </div>
+      <div class="feed-status wait" id="feedStatus"><i class="led"></i>FEED ▸ PRINTING…</div>
+      <div>04 AUG 2026 — PRINTED NOWHERE, READ EVERYWHERE</div>
     </div>
-    <div class="feed-status wait" id="feedStatus"><i class="led"></i>FEED ▸ PRINTING…</div>
-    <div>04 AUG 2026 — PRINTED NOWHERE, READ EVERYWHERE</div>
   </div>
 </header>
 
@@ -386,6 +400,12 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <button class="cat-btn" data-cat="culture">CULTURE</button>
     <button class="cat-btn" data-cat="opinion">OPINION</button>
     <div class="nav-tools">
+      <button class="icon-tool" id="memberFeatureIconBtn" type="button" aria-label="Open saved dispatches" title="Saved dispatches">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+      </button>
+      <button class="icon-tool" id="memberAccountIconBtn" type="button" aria-label="Open account" title="Account">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      </button>
       <a class="admin-link" href="/admin">CMS</a>
       <button class="member-btn" id="memberSavedBtn" type="button">SAVED</button>
       <span class="member-chip gone" id="memberChip"></span>
