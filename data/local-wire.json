@@ -1,0 +1,536 @@
+[
+  {
+    "id": "lw-01",
+    "slug": "lagos-after-dark",
+    "title": "LAGOS AFTER DARK: THE BLACKOUT ECONOMY",
+    "subtitle": "Six months inside the diesel economy",
+    "summary": "The grid fails, the generators roar, and somebody gets paid. We followed the diesel money through six months, three substations and one very quiet ministry — into the city that refuses to sleep, because sleep costs fuel.",
+    "type": "article",
+    "status": "published",
+    "featured": true,
+    "pinned": true,
+    "editorial_weight": 100,
+    "published_at": "2026-08-04T05:00:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/186d55f54-5ec8-4d91-9096-002789004325.png",
+    "image_alt": "Lagos street at night in the rain with neon signs and danfo buses",
+    "creators": [
+      {
+        "name": "Adaeze Okonkwo",
+        "role": "Writer"
+      },
+      {
+        "name": "K. Balogun",
+        "role": "Photographer"
+      }
+    ],
+    "categories": [
+      "Africa"
+    ],
+    "category_slugs": [
+      "africa"
+    ],
+    "tags": [
+      "Front Page",
+      "Investigation"
+    ],
+    "tag_slugs": [
+      "front-page",
+      "investigation"
+    ]
+  },
+  {
+    "id": "lw-02",
+    "slug": "nairobi-silicon-savannah-villain-arc",
+    "title": "NAIROBI'S SILICON SAVANNAH ENTERS ITS VILLAIN ARC",
+    "subtitle": null,
+    "summary": "Layoffs, land grabs and a unicorn that stopped answering emails. The founders are still shipping — but the dream got a term sheet.",
+    "type": "article",
+    "status": "published",
+    "featured": true,
+    "pinned": false,
+    "editorial_weight": 90,
+    "published_at": "2026-08-04T04:40:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/149fa6a40-e79e-4a22-bf4f-191b406eb000.png",
+    "image_alt": "Developers at night in a Nairobi tech hub with a mural wall",
+    "creators": [
+      {
+        "name": "W. Kamau",
+        "role": "Writer"
+      }
+    ],
+    "categories": [
+      "Tech"
+    ],
+    "category_slugs": [
+      "tech"
+    ],
+    "tags": [
+      "Front Page"
+    ],
+    "tag_slugs": [
+      "front-page"
+    ]
+  },
+  {
+    "id": "lw-03",
+    "slug": "mural-wars-joburg",
+    "title": "THE MURAL WARS: WHO OWNS JOBURG'S WALLS?",
+    "subtitle": null,
+    "summary": "Developers paint over memory; writers paint it back. A walking tour of the city's loudest argument, block by block.",
+    "type": "article",
+    "status": "published",
+    "featured": true,
+    "pinned": false,
+    "editorial_weight": 85,
+    "published_at": "2026-08-04T04:20:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/1098a627d-0cec-4ef7-a416-0a1035e3ca1d.png",
+    "image_alt": "Protest mural in Johannesburg with raised fist silhouette",
+    "creators": [
+      {
+        "name": "T. Mokoena",
+        "role": "Writer"
+      }
+    ],
+    "categories": [
+      "Culture"
+    ],
+    "category_slugs": [
+      "culture"
+    ],
+    "tags": [
+      "Front Page"
+    ],
+    "tag_slugs": [
+      "front-page"
+    ]
+  },
+  {
+    "id": "lw-04",
+    "slug": "sahel-fallout",
+    "title": "SAHEL FALLOUT: WHAT THE COUP BELT MEANS FOR YOUR PORTFOLIO",
+    "subtitle": null,
+    "summary": "Uranium, gold, corridors, proxies. A map-driven briefing on the belt that keeps redrawing itself.",
+    "type": "essay",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 75,
+    "published_at": "2026-08-04T04:00:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/19f50b58e-2f3c-4dde-921f-30f24515e681.png",
+    "image_alt": "Military convoy in a Sahel dust storm at dusk",
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Power"
+    ],
+    "category_slugs": [
+      "power"
+    ],
+    "tags": [
+      "Desk"
+    ],
+    "tag_slugs": [
+      "desk"
+    ]
+  },
+  {
+    "id": "lw-05",
+    "slug": "port-politics",
+    "title": "PORT POLITICS: THE NEW SCRAMBLE FOR AFRICA'S COASTLINES",
+    "subtitle": null,
+    "summary": "From Mombasa to Pointe-Noire, the crane is the new flag. Who signs the concessions — and who loads the ships?",
+    "type": "essay",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 74,
+    "published_at": "2026-08-04T03:50:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/1a2701d1f-9c59-4f3f-a0b9-4af37c625634.png",
+    "image_alt": "Container port cranes at dusk",
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Economy"
+    ],
+    "category_slugs": [
+      "economy"
+    ],
+    "tags": [
+      "Desk"
+    ],
+    "tag_slugs": [
+      "desk"
+    ]
+  },
+  {
+    "id": "lw-06",
+    "slug": "europe-border-theatre",
+    "title": "EUROPE'S BORDER THEATRE IS A DISTRACTION. HERE ARE THE RECEIPTS.",
+    "subtitle": null,
+    "summary": "The spectacle is on the Mediterranean; the money moves through the ledger. We read both.",
+    "type": "essay",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 73,
+    "published_at": "2026-08-04T03:40:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/1fc1235dc-bfe0-4a5f-9bee-9fee8a1db4cd.png",
+    "image_alt": "Rainy neon street in Paris with figure holding umbrella",
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "World"
+    ],
+    "category_slugs": [
+      "world"
+    ],
+    "tags": [
+      "Desk"
+    ],
+    "tag_slugs": [
+      "desk"
+    ]
+  },
+  {
+    "id": "lw-07",
+    "slug": "diaspora-vote-op-ed",
+    "title": "THE DIASPORA VOTE IS A SLEEPING GIANT",
+    "subtitle": "DAKAR · 8 MIN · COMMENTS OPEN",
+    "summary": "The diaspora vote is a sleeping giant with a remittance app and a long memory.",
+    "type": "essay",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 70,
+    "published_at": "2026-08-04T03:30:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Prof. A. Diallo",
+        "role": "Contributor"
+      }
+    ],
+    "categories": [
+      "Opinion"
+    ],
+    "category_slugs": [
+      "opinion"
+    ],
+    "tags": [
+      "Op-Ed"
+    ],
+    "tag_slugs": [
+      "op-ed"
+    ]
+  },
+  {
+    "id": "lw-08",
+    "slug": "amapiano-goes-to-jail",
+    "title": "AMAPIANO GOES TO JAIL: THE SOUND THEY TRIED TO BAN",
+    "subtitle": "SOUND ISSUE",
+    "summary": "How a log drum became a public order problem in three countries and a religion in a fourth.",
+    "type": "gallery",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 63,
+    "published_at": "2026-08-04T03:20:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Culture"
+    ],
+    "category_slugs": [
+      "culture"
+    ],
+    "tags": [
+      "Frequency"
+    ],
+    "tag_slugs": [
+      "frequency"
+    ]
+  },
+  {
+    "id": "lw-09",
+    "slug": "tracks-for-a-lagos-blackout",
+    "title": "14 TRACKS FOR A LAGOS BLACKOUT",
+    "subtitle": "MIXTAPE",
+    "summary": "Curated by three genset owners and one very patient neighbour.",
+    "type": "gallery",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 62,
+    "published_at": "2026-08-04T03:10:00Z",
+    "image_url": "https://image.qwenlm.ai/public_source/d06c5f8d-358d-4121-a716-309fc0ab4573/14e996913-2c58-4a03-b2f5-7044b0e23783.png",
+    "image_alt": "Saxophone player in smoky neon club",
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Culture"
+    ],
+    "category_slugs": [
+      "culture"
+    ],
+    "tags": [
+      "Frequency"
+    ],
+    "tag_slugs": [
+      "frequency"
+    ]
+  },
+  {
+    "id": "lw-10",
+    "slug": "writer-tagging-the-cfa-obituary",
+    "title": "THE WRITER TAGGING THE CFA FRANC'S OBITUARY",
+    "subtitle": "INTERVIEW",
+    "summary": "\"I don't deface currency. I annotate it.\" A conversation from an undisclosed rooftop.",
+    "type": "gallery",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 61,
+    "published_at": "2026-08-04T03:00:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Culture"
+    ],
+    "category_slugs": [
+      "culture"
+    ],
+    "tags": [
+      "Frequency"
+    ],
+    "tag_slugs": [
+      "frequency"
+    ]
+  },
+  {
+    "id": "lw-11",
+    "slug": "album-that-split-the-diaspora",
+    "title": "THE ALBUM THAT SPLIT THE DIASPORA IN HALF",
+    "subtitle": "REVIEW",
+    "summary": "Five stars from London, one star from Lagos, and a group chat that will never recover.",
+    "type": "gallery",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 60,
+    "published_at": "2026-08-04T02:50:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Culture"
+    ],
+    "category_slugs": [
+      "culture"
+    ],
+    "tags": [
+      "Frequency"
+    ],
+    "tag_slugs": [
+      "frequency"
+    ]
+  },
+  {
+    "id": "lw-12",
+    "slug": "accra-flooded-markets",
+    "title": "Accra's flooded markets: who ignored the 2019 warning report?",
+    "subtitle": "AFRICA · 482 COMMENTS",
+    "summary": null,
+    "type": "announcement",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 55,
+    "published_at": "2026-08-04T02:40:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Africa"
+    ],
+    "category_slugs": [
+      "africa"
+    ],
+    "tags": [
+      "Trending"
+    ],
+    "tag_slugs": [
+      "trending"
+    ]
+  },
+  {
+    "id": "lw-13",
+    "slug": "cfa-franc-divorce-explainer",
+    "title": "Explainer: the CFA franc divorce, 60 years in the making",
+    "subtitle": "ECONOMY · 317 COMMENTS",
+    "summary": null,
+    "type": "announcement",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 54,
+    "published_at": "2026-08-04T02:30:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Economy"
+    ],
+    "category_slugs": [
+      "economy"
+    ],
+    "tags": [
+      "Trending"
+    ],
+    "tag_slugs": [
+      "trending"
+    ]
+  },
+  {
+    "id": "lw-14",
+    "slug": "afrobeats-buys-its-label",
+    "title": "Afrobeats just bought its own label. Now what?",
+    "subtitle": "CULTURE · 298 COMMENTS",
+    "summary": null,
+    "type": "announcement",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 53,
+    "published_at": "2026-08-04T02:20:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Culture"
+    ],
+    "category_slugs": [
+      "culture"
+    ],
+    "tags": [
+      "Trending"
+    ],
+    "tag_slugs": [
+      "trending"
+    ]
+  },
+  {
+    "id": "lw-15",
+    "slug": "capetown-water-mafia-mapped",
+    "title": "Cape Town's water mafia, mapped block by block",
+    "subtitle": "INVESTIGATION · 264 COMMENTS",
+    "summary": null,
+    "type": "announcement",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 52,
+    "published_at": "2026-08-04T02:10:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "Africa"
+    ],
+    "category_slugs": [
+      "africa"
+    ],
+    "tags": [
+      "Trending"
+    ],
+    "tag_slugs": [
+      "trending"
+    ]
+  },
+  {
+    "id": "lw-16",
+    "slug": "midnight-train-sahel",
+    "title": "The quiet return of the midnight train across the Sahel",
+    "subtitle": "WORLD · 201 COMMENTS",
+    "summary": null,
+    "type": "announcement",
+    "status": "published",
+    "featured": false,
+    "pinned": false,
+    "editorial_weight": 51,
+    "published_at": "2026-08-04T02:00:00Z",
+    "image_url": null,
+    "image_alt": null,
+    "creators": [
+      {
+        "name": "Griot Noir Editorial",
+        "role": "Editor"
+      }
+    ],
+    "categories": [
+      "World"
+    ],
+    "category_slugs": [
+      "world"
+    ],
+    "tags": [
+      "Trending"
+    ],
+    "tag_slugs": [
+      "trending"
+    ]
+  }
+]
