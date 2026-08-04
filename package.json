@@ -6,16 +6,29 @@
     "start": "node backend/server.js",
     "dev": "node backend/server.js",
     "smoke:staging": "node scripts/smoke-test.js",
-    "test": "echo \"No test suite configured\""
+    "test": "echo \"No test suite configured\"",
+    "cap:prepare:web": "node scripts/prepare-mobile-web.js",
+    "cap:copy": "npm run cap:prepare:web && npx cap copy",
+    "cap:sync": "npm run cap:prepare:web && npx cap sync",
+    "cap:add:android": "npm run cap:prepare:web && npx cap add android",
+    "cap:add:ios": "npm run cap:prepare:web && npx cap add ios",
+    "cap:open:android": "npx cap open android",
+    "cap:open:ios": "npx cap open ios"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/ios": "^8.5.0",
     "@supabase/supabase-js": "^2.54.0",
     "dotenv": "^16.4.5",
     "express": "^5.2.1",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.0"
   }
 }
