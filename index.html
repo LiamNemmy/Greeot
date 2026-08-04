@@ -75,11 +75,11 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .mast-account-action:hover{border-color:var(--acid);color:var(--acid)}
 .mast-account-action.active{border-color:var(--acid);color:#000;background:var(--acid)}
 .mast-meta{text-align:right;font-size:clamp(9px,1.5vw,11px);letter-spacing:1px;color:var(--dim)}
-.events-teaser{margin-top:6px;width:100%;text-align:left;background:#101021;border:1px solid var(--line);color:var(--text);padding:8px 10px;display:grid;gap:4px;transition:.2s}
+.events-teaser{width:min(100%,760px);margin:8px 0 0 auto;text-align:left;background:#101021;border:1px solid var(--line);color:var(--text);padding:8px 10px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;transition:.2s}
 .events-teaser:hover{border-color:var(--cyan);box-shadow:0 0 0 1px rgba(34,230,240,.2)}
-.events-teaser .kicker{font-family:var(--black);font-size:9px;letter-spacing:2px;color:var(--cyan)}
-.events-teaser .name{font-family:var(--display);font-size:clamp(18px,2.8vw,23px);letter-spacing:1px;line-height:1}
-.events-teaser .meta{font-size:10px;letter-spacing:1px;color:var(--dim)}
+.events-teaser .kicker{font-family:var(--black);font-size:9px;letter-spacing:2px;color:var(--cyan);white-space:nowrap}
+.events-teaser .name{font-family:var(--display);font-size:clamp(18px,2.8vw,23px);letter-spacing:1px;line-height:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.events-teaser .meta{font-size:10px;letter-spacing:1px;color:var(--dim);white-space:nowrap}
 .mast-meta .clocks{display:flex;flex-direction:column;gap:4px;justify-content:flex-end;align-items:flex-end;margin-top:6px}
 .mast-meta .clocks b{color:var(--cyan);font-weight:400}
 .feed-status{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:7px;font-size:9px;letter-spacing:2px}
@@ -345,6 +345,8 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
   .mast-side{align-items:flex-end;max-width:min(62vw,240px)}
   .mast-meta{text-align:right;min-width:0;max-width:100%}
   .mast-meta .clocks,.feed-status{justify-content:flex-end}
+  .events-teaser{width:100%;grid-column:1 / -1;grid-template-columns:auto minmax(0,1fr);row-gap:4px}
+  .events-teaser .meta{grid-column:1 / -1;white-space:normal}
   .hero{min-height:clamp(340px,86vw,440px)}
   .sticker{padding:4px 9px}
   .opinion{flex-direction:column;align-items:flex-start;gap:12px}
@@ -393,11 +395,6 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
         <span>ACCOUNT</span>
       </button>
-      <button class="events-teaser" id="eventsTeaserBtn" type="button" aria-label="Open events list" aria-haspopup="dialog">
-        <span class="kicker">EVENTS</span>
-        <span class="name" id="eventsTeaserName">LOADING EVENTS…</span>
-        <span class="meta" id="eventsTeaserMeta">Tap to open full list</span>
-      </button>
       <div class="mast-meta">
         <div class="clocks">
           <span>LAGOS <b id="clockLagos">--:--</b></span>
@@ -410,6 +407,11 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
       </div>
     </div>
   </div>
+  <button class="events-teaser" id="eventsTeaserBtn" type="button" aria-label="Open events list" aria-haspopup="dialog">
+    <span class="kicker">EVENTS</span>
+    <span class="name" id="eventsTeaserName">LOADING EVENTS…</span>
+    <span class="meta" id="eventsTeaserMeta">Tap to open full list</span>
+  </button>
 </header>
 
 <!-- NAV -->
