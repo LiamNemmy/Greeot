@@ -502,6 +502,10 @@ async function loadFeed() {
 }
 
 function handleInteractiveCardClick(target) {
+  if (target.closest("[data-bookmark-article]")) {
+    return true;
+  }
+
   const explicit = target.closest("[data-open-article]");
   if (explicit) {
     const articleId = explicit.getAttribute("data-open-article");
