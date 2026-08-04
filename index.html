@@ -50,6 +50,9 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 @keyframes tick{to{transform:translateX(-50%)}}
 .ticker-group{display:flex;align-items:center;white-space:nowrap;font-size:clamp(10.5px,1.6vw,12px);letter-spacing:1px;color:var(--dim)}
 .ticker-group span{padding:9px 0}
+.ticker-group .ticker-link{display:inline-block;padding:9px 0;color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.ticker-group .ticker-link:hover{color:var(--cyan);border-bottom-color:var(--cyan)}
+.ticker-group .ticker-link:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .ticker-group i{font-style:normal;color:var(--magenta);padding:0 clamp(10px,2.5vw,18px)}
 .ticker-group b{color:var(--text);font-weight:400}
 
@@ -297,12 +300,12 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
   <div class="ticker-label"><span class="dot"></span>BREAKING</div>
   <div class="ticker-view"><div class="ticker-track">
     <div class="ticker-group">
-      <span><b>COUP RUMOURS SWIRL IN N'DJAMENA — JUNTA SAYS "BUSINESS AS USUAL"</b></span><i>✦</i>
-      <span>NAIROBI MATATU STRIKE ENTERS DAY 3, CBD GRIDLOCKED</span><i>✦</i>
-      <span><b>GLOBAL COCOA FUTURES SPIKE +212% AFTER HARVEST COLLAPSE</b></span><i>✦</i>
-      <span>AU SUMMIT COLLIDES WITH EU SUMMIT — TWO AGENDAS, ONE LEAKED DRAFT</span><i>✦</i>
-      <span><b>AFROBEATS HEADLINER DENIES SENATE RUN: "ASK ME IN 2031"</b></span><i>✦</i>
-      <span>CAPE TOWN CURFEW LIFTED IN THREE SUBURBS AFTER 41 NIGHTS</span><i>✦</i>
+      <a class="ticker-link" href="/directory.html"><b>COUP RUMOURS SWIRL IN N'DJAMENA — JUNTA SAYS "BUSINESS AS USUAL"</b></a><i>✦</i>
+      <a class="ticker-link" href="/directory.html">NAIROBI MATATU STRIKE ENTERS DAY 3, CBD GRIDLOCKED</a><i>✦</i>
+      <a class="ticker-link" href="/directory.html"><b>GLOBAL COCOA FUTURES SPIKE +212% AFTER HARVEST COLLAPSE</b></a><i>✦</i>
+      <a class="ticker-link" href="/directory.html">AU SUMMIT COLLIDES WITH EU SUMMIT — TWO AGENDAS, ONE LEAKED DRAFT</a><i>✦</i>
+      <a class="ticker-link" href="/directory.html"><b>AFROBEATS HEADLINER DENIES SENATE RUN: "ASK ME IN 2031"</b></a><i>✦</i>
+      <a class="ticker-link" href="/directory.html">CAPE TOWN CURFEW LIFTED IN THREE SUBURBS AFTER 41 NIGHTS</a><i>✦</i>
     </div>
     <div class="ticker-group" aria-hidden="true">
       <span><b>COUP RUMOURS SWIRL IN N'DJAMENA — JUNTA SAYS "BUSINESS AS USUAL"</b></span><i>✦</i>
