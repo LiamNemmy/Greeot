@@ -88,33 +88,6 @@ function imgHTML(it, alt) {
   return '<div class="ph"><img src="' + esc(it.image_url) + '" alt="' + esc(it.image_alt || alt) + '"></div>';
 }
 
-function heroTitleHTML(title) {
-  const raw = String(title || "");
-  const match = /dark/i.exec(raw);
-  if (!match) return esc(raw);
-  const start = match.index;
-  const word = raw.slice(start, start + 4);
-  const before = raw.slice(0, start);
-  const after = raw.slice(start + 4);
-  return (
-    esc(before) +
-    esc(word.slice(0, 2)) +
-    '<span class="hero-dark-r">' +
-    esc(word.charAt(2)) +
-    "</span>" +
-    esc(word.slice(3)) +
-    esc(after)
-  );
-}
-
-function applyHeroDarkFlicker() {
-  const heroTitleEl = slotHero && slotHero.querySelector(".hero h2");
-  if (!heroTitleEl) return;
-  const rawTitle = String(heroTitleEl.textContent || "");
-  if (!/dark/i.test(rawTitle)) return;
-  heroTitleEl.innerHTML = heroTitleHTML(rawTitle);
-}
-
 function heroHTML(it) {
   const cat = (it.categories[0] || "Front Page").toUpperCase();
   const stick = hasTag(it, "investigation")
@@ -139,7 +112,7 @@ function heroHTML(it) {
     esc(cat) +
     "</span>" +
     "<h2>" +
-    heroTitleHTML(it.title) +
+    esc(it.title) +
     "</h2>" +
     (it.summary ? "<p>" + esc(it.summary) + "</p>" : "") +
     "<div class=\"meta\">BY " +
@@ -496,7 +469,6 @@ function renderFeed(items, mode) {
   setArticleLookup(items);
 
   slotHero.innerHTML = heroItem ? heroHTML(heroItem) : "";
-  applyHeroDarkFlicker();
   slotDuo.innerHTML = duoArr.map(duoHTML).join("");
   slotAnalysis.innerHTML = deskArr.map(deskHTML).join("");
   slotOpinion.innerHTML = opEd ? opinionHTML(opEd) : "";

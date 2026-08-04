@@ -64,12 +64,18 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .brand h1 span{display:block}
 .brand h1 .flick{animation:flick 4s linear infinite}
 @keyframes flick{0%,6%,8%,100%{opacity:1}7%{opacity:.2}42%{opacity:1}43%{opacity:.3}44%{opacity:1}}
+.brand .bazaar-flick{display:inline-block;animation:bazaar-flick .95s steps(2,end) infinite;color:var(--acid);text-shadow:0 0 10px rgba(216,255,62,.9),2px 0 0 rgba(255,46,136,.7)}
+@keyframes bazaar-flick{0%,18%,52%,100%{opacity:1;transform:translateX(0)}19%,24%{opacity:.18;transform:translateX(-1px)}25%,29%{opacity:1;transform:translateX(1px)}75%{opacity:.35}}
 .brand .tag{font-family:var(--marker);color:var(--acid);font-size:clamp(12px,2.8vw,15px);transform:rotate(-2deg);display:inline-block;margin-top:6px}
 .spray{position:absolute;pointer-events:none;opacity:.5;z-index:-1;width:clamp(90px,14vw,180px);left:-20px;top:-16px;color:var(--magenta)}
 .mast-right{display:flex;align-items:flex-end;gap:clamp(10px,2vw,16px)}
-.home-logo{width:clamp(64px,9vw,102px);aspect-ratio:1/1;display:block;flex:0 0 auto;border:1px solid var(--line);background:#0b0b0b;padding:4px;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:transform .2s,border-color .2s,box-shadow .2s}
-.home-logo img{width:100%;height:100%;object-fit:cover}
+.home-logo{width:clamp(64px,9vw,102px);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:1px solid var(--line);background:#0b0b0b;padding:4px;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:transform .2s,border-color .2s,box-shadow .2s}
+.home-logo img{width:100%;height:100%;object-fit:contain;object-position:center}
 .home-logo:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 0 14px rgba(34,230,240,.25)}
+.mast-account-action{position:absolute;right:var(--pad-x);top:6px;display:inline-flex;align-items:center;gap:6px;background:#0a0a12;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:6px 9px;z-index:5;transition:.2s}
+.mast-account-action svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mast-account-action:hover{border-color:var(--acid);color:var(--acid)}
+.mast-account-action.active{border-color:var(--acid);color:#000;background:var(--acid)}
 .mast-meta{text-align:right;font-size:clamp(9px,1.5vw,11px);letter-spacing:1px;color:var(--dim)}
 .mast-meta .clocks{display:flex;gap:clamp(8px,1.8vw,14px);justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
 .mast-meta .clocks b{color:var(--cyan);font-weight:400}
@@ -145,8 +151,6 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .hero p{margin-top:clamp(8px,1.8vw,14px);max-width:56ch;color:#cfcfdd;font-size:clamp(12.5px,1.8vw,14px);line-height:1.7}
 .hero .meta{margin-top:clamp(8px,1.8vw,14px)}
 .hero .meta b{color:var(--cyan);font-weight:400}
-.hero .hero-dark-r{display:inline-block;animation:flick-r .7s steps(2,end) infinite;color:var(--acid);text-shadow:0 0 10px rgba(216,255,62,.9),2px 0 0 rgba(255,46,136,.8)}
-@keyframes flick-r{0%,32%,58%,100%{opacity:1;transform:translateX(0)}33%,37%{opacity:.08;transform:translateX(-1px)}38%,42%{opacity:1;transform:translateX(1px)}70%{opacity:.25}}
 .scribble{position:absolute;right:clamp(14px,3vw,26px);top:clamp(14px,3vw,22px);z-index:3;font-family:var(--marker);color:var(--acid);font-size:clamp(13px,2.2vw,16px);transform:rotate(6deg);text-align:right}
 .scribble svg{display:block;margin:4px 0 0 auto}
 @media(max-width:720px){.scribble{display:none}}
@@ -328,6 +332,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 @media(max-width:600px){
   .masthead{align-items:flex-start}
+  .mast-account-action{top:4px;right:var(--pad-x)}
   .mast-right{width:100%;justify-content:space-between;align-items:flex-start}
   .mast-meta{text-align:left;flex:1;min-width:0}
   .mast-meta .clocks,.feed-status{justify-content:flex-start}
@@ -370,7 +375,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 <header class="masthead">
   <svg class="spray" viewBox="0 0 200 200"><g fill="currentColor"><circle cx="100" cy="100" r="46"/><circle cx="150" cy="70" r="12"/><circle cx="160" cy="120" r="8"/><circle cx="50" cy="60" r="10"/><circle cx="40" cy="140" r="14"/><circle cx="130" cy="160" r="7"/><circle cx="70" cy="170" r="5"/><circle cx="170" cy="40" r="4"/></g></svg>
   <div class="brand">
-    <h1><span>The E.</span><span>African</span><span>Bazaar</span></h1>
+    <h1><span>The E.</span><span>African</span><span>Bazaa<span class="bazaar-flick">r</span></span></h1>
     <span class="tag">The world, from Africa</span>
   </div>
   <div class="mast-right">
@@ -389,6 +394,10 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
       <div>04 AUG 2026 — PRINTED NOWHERE, READ EVERYWHERE</div>
     </div>
   </div>
+  <button class="mast-account-action" id="memberTopAccountBtn" type="button" aria-label="Open account">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+    <span>ACCOUNT</span>
+  </button>
 </header>
 
 <!-- NAV -->
@@ -405,9 +414,6 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <div class="nav-tools">
       <button class="icon-tool" id="memberFeatureIconBtn" type="button" aria-label="Open saved dispatches" title="Saved dispatches">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
-      </button>
-      <button class="icon-tool" id="memberAccountIconBtn" type="button" aria-label="Open account" title="Account">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
       </button>
       <a class="admin-link" href="/admin">CMS</a>
       <button class="member-btn" id="memberSavedBtn" type="button">SAVED</button>
@@ -572,7 +578,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./js/mobile-splash.js"></script>
-<script type="module" src="./js/main.js?v=20260805-hero-flicker-fix"></script>
-<script type="module" src="./js/member-features.js"></script>
+<script type="module" src="./js/main.js?v=20260805-bazaar-flicker"></script>
+<script type="module" src="./js/member-features.js?v=20260805-account-button"></script>
 </body>
 </html>

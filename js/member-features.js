@@ -18,6 +18,7 @@ const memberLogoutBtn = document.getElementById("memberLogoutBtn");
 const memberChip = document.getElementById("memberChip");
 const memberSavedBtn = document.getElementById("memberSavedBtn");
 const memberAccountIconBtn = document.getElementById("memberAccountIconBtn");
+const memberTopAccountBtn = document.getElementById("memberTopAccountBtn");
 const memberFeatureIconBtn = document.getElementById("memberFeatureIconBtn");
 
 const savedOverlay = document.getElementById("savedOverlay");
@@ -119,6 +120,7 @@ function renderMemberControls() {
     memberAuthBtn.disabled = true;
     memberSavedBtn.disabled = true;
     if (memberAccountIconBtn) memberAccountIconBtn.disabled = true;
+    if (memberTopAccountBtn) memberTopAccountBtn.disabled = true;
     if (memberFeatureIconBtn) memberFeatureIconBtn.disabled = true;
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
@@ -133,6 +135,10 @@ function renderMemberControls() {
       memberAccountIconBtn.disabled = false;
       memberAccountIconBtn.classList.remove("active");
     }
+    if (memberTopAccountBtn) {
+      memberTopAccountBtn.disabled = false;
+      memberTopAccountBtn.classList.remove("active");
+    }
     if (memberFeatureIconBtn) memberFeatureIconBtn.disabled = false;
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
@@ -142,10 +148,12 @@ function renderMemberControls() {
   memberAuthBtn.disabled = false;
   memberSavedBtn.disabled = false;
   if (memberAccountIconBtn) memberAccountIconBtn.disabled = false;
+  if (memberTopAccountBtn) memberTopAccountBtn.disabled = false;
   if (memberFeatureIconBtn) memberFeatureIconBtn.disabled = false;
   if (!sessionUser) {
     memberAuthBtn.textContent = "SIGN IN";
     if (memberAccountIconBtn) memberAccountIconBtn.classList.remove("active");
+    if (memberTopAccountBtn) memberTopAccountBtn.classList.remove("active");
     memberLogoutBtn.classList.add("gone");
     memberChip.classList.add("gone");
     return;
@@ -153,6 +161,7 @@ function renderMemberControls() {
 
   memberAuthBtn.textContent = "ACCOUNT";
   if (memberAccountIconBtn) memberAccountIconBtn.classList.add("active");
+  if (memberTopAccountBtn) memberTopAccountBtn.classList.add("active");
   memberLogoutBtn.classList.remove("gone");
   memberChip.classList.remove("gone");
   memberChip.textContent = articleHandleFromUser(sessionUser);
@@ -494,6 +503,12 @@ memberSavedBtn.addEventListener("click", function () {
 
 if (memberAccountIconBtn) {
   memberAccountIconBtn.addEventListener("click", function () {
+    memberAuthBtn.click();
+  });
+}
+
+if (memberTopAccountBtn) {
+  memberTopAccountBtn.addEventListener("click", function () {
     memberAuthBtn.click();
   });
 }
