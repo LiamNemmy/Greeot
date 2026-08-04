@@ -69,16 +69,13 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .brand .tag{font-family:var(--marker);color:var(--acid);font-size:clamp(12px,2.8vw,15px);transform:rotate(-2deg);display:inline-block;margin-top:6px}
 .spray{position:absolute;pointer-events:none;opacity:.5;z-index:-1;width:clamp(90px,14vw,180px);left:-20px;top:-16px;color:var(--magenta)}
 .mast-right{display:flex;align-items:flex-start;gap:clamp(10px,2vw,16px);margin-left:auto}
-.mast-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.home-logo{width:clamp(64px,9vw,102px);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:1px solid var(--line);background:#0b0b0b;padding:4px;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:transform .2s,border-color .2s,box-shadow .2s}
-.home-logo img{width:100%;height:100%;object-fit:contain;object-position:center}
-.home-logo:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 0 14px rgba(34,230,240,.25)}
+.mast-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:min(42vw,320px)}
 .mast-account-action{display:inline-flex;align-items:center;gap:6px;background:#0a0a12;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:6px 9px;z-index:5;transition:.2s}
 .mast-account-action svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mast-account-action:hover{border-color:var(--acid);color:var(--acid)}
 .mast-account-action.active{border-color:var(--acid);color:#000;background:var(--acid)}
 .mast-meta{text-align:right;font-size:clamp(9px,1.5vw,11px);letter-spacing:1px;color:var(--dim)}
-.mast-meta .clocks{display:flex;gap:clamp(8px,1.8vw,14px);justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.mast-meta .clocks{display:flex;flex-direction:column;gap:4px;justify-content:flex-end;align-items:flex-end;margin-top:6px}
 .mast-meta .clocks b{color:var(--cyan);font-weight:400}
 .mast-meta .edition{font-family:var(--marker);color:var(--amber);font-size:clamp(12px,2.4vw,14px);transform:rotate(1.5deg)}
 .feed-status{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:7px;font-size:9px;letter-spacing:2px}
@@ -332,11 +329,10 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 .foot-base .mk{font-family:var(--marker);color:var(--magenta);font-size:13px}
 
 @media(max-width:600px){
-  .masthead{align-items:flex-start}
-  .brand{flex:1 1 100%}
-  .mast-right{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;column-gap:12px}
-  .home-logo{justify-self:start}
-  .mast-side{justify-self:end;align-items:flex-end;max-width:min(72vw,300px)}
+  .masthead{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;align-items:start}
+  .brand{flex:unset;min-width:0}
+  .mast-right{margin-left:0}
+  .mast-side{align-items:flex-end;max-width:min(62vw,240px)}
   .mast-meta{text-align:right;min-width:0;max-width:100%}
   .mast-meta .clocks,.feed-status{justify-content:flex-end}
   .hero{min-height:clamp(340px,86vw,440px)}
@@ -382,9 +378,6 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <span class="tag">The world, from Africa</span>
   </div>
   <div class="mast-right">
-    <a class="home-logo" href="/" aria-label="Home">
-      <img src="https://hfbdphfdxfgwmviogoif.supabase.co/storage/v1/object/public/The%20Dogon/cover%20queen.png" alt="The E. African Bazaar logo">
-    </a>
     <div class="mast-side">
       <button class="mast-account-action" id="memberTopAccountBtn" type="button" aria-label="Open account">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
