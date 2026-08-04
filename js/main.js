@@ -259,6 +259,8 @@ const slotTrending = document.getElementById("slotTrending");
 const analysisHead = document.getElementById("analysis");
 const cultureHead = document.getElementById("culture");
 const feedStatus = document.getElementById("feedStatus");
+const editionLabel = document.getElementById("editionLabel");
+const mastDateLine = document.getElementById("mastDateLine");
 
 const readerOverlay = document.getElementById("readerOverlay");
 const readerClose = document.getElementById("readerClose");
@@ -270,6 +272,27 @@ const readerMeta = document.getElementById("readerMeta");
 const readerBody = document.getElementById("readerBody");
 
 let articleLookup = Object.create(null);
+
+function modeLabel(mode) {
+  if (mode === "api") return "API LIVE";
+  if (mode === "live") return "SUPABASE LIVE";
+  if (mode === "local") return "LOCAL WIRE";
+  if (mode === "fallback") return "SUPABASE FALLBACK";
+  return "PRINTING";
+}
+
+function updateMastMeta(mode, count) {
+  const now = new Date();
+  const weekday = now.toLocaleDateString("en-GB", { weekday: "long" }).toUpperCase();
+  const dateLabel = now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase();
+  const itemLabel = Number.isFinite(count) && count > 0 ? `${count} ITEMS` : "WIRE";
+  if (editionLabel) {
+    editionLabel.textContent = `${weekday} EDITION // ${modeLabel(mode)} // ${itemLabel}`;
+  }
+  if (mastDateLine) {
+    mastDateLine.textContent = `${dateLabel} — PRINTED NOWHERE, READ EVERYWHERE`;
+  }
+}
 
 function setStatus(mode, count) {
   feedStatus.classList.remove("ok", "warn", "bad", "wait");
@@ -289,6 +312,7 @@ function setStatus(mode, count) {
     feedStatus.classList.add("wait");
     feedStatus.innerHTML = '<i class="led"></i>FEED ▸ PRINTING…';
   }
+  updateMastMeta(mode, count);
 }
 
 function showSkeletons() {
@@ -1058,6 +1082,7 @@ function tickClock() {
 
 tickClock();
 setInterval(tickClock, 10000);
+updateMastMeta("wait", 0);
 document.getElementById("yr").textContent = new Date().getFullYear();
 
 renderWall();
