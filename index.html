@@ -75,9 +75,13 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .mast-account-action:hover{border-color:var(--acid);color:var(--acid)}
 .mast-account-action.active{border-color:var(--acid);color:#000;background:var(--acid)}
 .mast-meta{text-align:right;font-size:clamp(9px,1.5vw,11px);letter-spacing:1px;color:var(--dim)}
+.events-teaser{margin-top:6px;width:100%;text-align:left;background:#101021;border:1px solid var(--line);color:var(--text);padding:8px 10px;display:grid;gap:4px;transition:.2s}
+.events-teaser:hover{border-color:var(--cyan);box-shadow:0 0 0 1px rgba(34,230,240,.2)}
+.events-teaser .kicker{font-family:var(--black);font-size:9px;letter-spacing:2px;color:var(--cyan)}
+.events-teaser .name{font-family:var(--display);font-size:clamp(18px,2.8vw,23px);letter-spacing:1px;line-height:1}
+.events-teaser .meta{font-size:10px;letter-spacing:1px;color:var(--dim)}
 .mast-meta .clocks{display:flex;flex-direction:column;gap:4px;justify-content:flex-end;align-items:flex-end;margin-top:6px}
 .mast-meta .clocks b{color:var(--cyan);font-weight:400}
-.mast-meta .edition{font-family:var(--marker);color:var(--amber);font-size:clamp(12px,2.4vw,14px);transform:rotate(1.5deg)}
 .feed-status{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:7px;font-size:9px;letter-spacing:2px}
 .feed-status .led{width:7px;height:7px;border-radius:50%;flex:0 0 auto}
 .feed-status.ok .led{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
@@ -302,6 +306,12 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .reader-comment-list{margin-top:12px;display:grid;gap:10px}
 .reader-comment-item{background:var(--panel2);border:1px solid var(--line);padding:10px}
 .reader-comment-item .meta{margin-top:6px}
+.events-card{width:min(620px,100%)}
+.events-list{margin-top:12px;display:grid;gap:10px;max-height:min(65vh,560px);overflow:auto}
+.event-row{background:var(--panel2);border:1px solid var(--line);padding:10px}
+.event-row .name{font-family:var(--display);font-size:clamp(20px,3.6vw,28px);line-height:1;letter-spacing:1px}
+.event-row .line{margin-top:6px;font-size:11px;letter-spacing:1px;color:var(--dim)}
+.event-row .line b{color:var(--cyan);font-weight:400}
 .auth-overlay{position:fixed;inset:0;background:rgba(5,5,10,.88);backdrop-filter:blur(2px);z-index:90;display:flex;align-items:center;justify-content:center;padding:clamp(12px,3vw,24px)}
 .auth-card{width:min(460px,100%);background:var(--panel);border:1px solid var(--line);padding:clamp(16px,3vw,22px)}
 .auth-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
@@ -383,8 +393,12 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
         <span>ACCOUNT</span>
       </button>
+      <button class="events-teaser" id="eventsTeaserBtn" type="button" aria-label="Open events list" aria-haspopup="dialog">
+        <span class="kicker">EVENTS</span>
+        <span class="name" id="eventsTeaserName">LOADING EVENTS…</span>
+        <span class="meta" id="eventsTeaserMeta">Tap to open full list</span>
+      </button>
       <div class="mast-meta">
-        <div class="edition" id="editionLabel">PRINTING EDITION // WIRE // -- ITEMS</div>
         <div class="clocks">
           <span>LAGOS <b id="clockLagos">--:--</b></span>
           <span>CAIRO <b id="clockCairo">--:--</b></span>
@@ -557,6 +571,17 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
   </article>
 </div>
 
+<div class="auth-overlay gone" id="eventsOverlay" aria-hidden="true">
+  <article class="auth-card events-card" role="dialog" aria-modal="true" aria-labelledby="eventsTitle">
+    <div class="auth-head">
+      <h2 id="eventsTitle">EVENTS</h2>
+      <button class="auth-close" id="eventsCloseBtn" type="button">✕ CLOSE</button>
+    </div>
+    <p class="auth-message" id="eventsMeta">Auto-generated placeholder events from backend.</p>
+    <div class="events-list" id="eventsList"></div>
+  </article>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="foot-in">
@@ -576,7 +601,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./js/mobile-splash.js"></script>
-<script type="module" src="./js/main.js?v=20260805-bazaar-flicker"></script>
+<script type="module" src="./js/main.js?v=20260805-events-panel"></script>
 <script type="module" src="./js/member-features.js?v=20260805-account-button"></script>
 </body>
 </html>

@@ -259,8 +259,14 @@ const slotTrending = document.getElementById("slotTrending");
 const analysisHead = document.getElementById("analysis");
 const cultureHead = document.getElementById("culture");
 const feedStatus = document.getElementById("feedStatus");
-const editionLabel = document.getElementById("editionLabel");
 const mastDateLine = document.getElementById("mastDateLine");
+const eventsTeaserBtn = document.getElementById("eventsTeaserBtn");
+const eventsTeaserName = document.getElementById("eventsTeaserName");
+const eventsTeaserMeta = document.getElementById("eventsTeaserMeta");
+const eventsOverlay = document.getElementById("eventsOverlay");
+const eventsCloseBtn = document.getElementById("eventsCloseBtn");
+const eventsMeta = document.getElementById("eventsMeta");
+const eventsList = document.getElementById("eventsList");
 
 const readerOverlay = document.getElementById("readerOverlay");
 const readerClose = document.getElementById("readerClose");
@@ -272,23 +278,117 @@ const readerMeta = document.getElementById("readerMeta");
 const readerBody = document.getElementById("readerBody");
 
 let articleLookup = Object.create(null);
+let eventsCache = [];
 
-function modeLabel(mode) {
-  if (mode === "api") return "API LIVE";
-  if (mode === "live") return "SUPABASE LIVE";
-  if (mode === "local") return "LOCAL WIRE";
-  if (mode === "fallback") return "SUPABASE FALLBACK";
-  return "PRINTING";
+function closeEventsOverlay() {
+  if (!eventsOverlay) return;
+  eventsOverlay.classList.add("gone");
+  eventsOverlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
 }
 
-function updateMastMeta(mode, count) {
-  const now = new Date();
-  const weekday = now.toLocaleDateString("en-GB", { weekday: "long" }).toUpperCase();
-  const dateLabel = now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase();
-  const itemLabel = Number.isFinite(count) && count > 0 ? `${count} ITEMS` : "WIRE";
-  if (editionLabel) {
-    editionLabel.textContent = `${weekday} EDITION // ${modeLabel(mode)} // ${itemLabel}`;
+function openEventsOverlay() {
+  if (!eventsOverlay) return;
+  eventsOverlay.classList.remove("gone");
+  eventsOverlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function normalizeEvent(row, index) {
+  const eventName = String((row && row.event_name) || "").trim() || `Night Event ${index + 1}`;
+  const location = String((row && row.location) || "").trim() || "Location TBA";
+  const entryFee = String((row && row.entry_fee) || "").trim() || "FREE";
+  const rawTime = String((row && row.time_label) || (row && row.time) || "").trim();
+  let timeLabel = rawTime;
+  if (!timeLabel) {
+    timeLabel = "Time TBA";
+  } else if (!String(row && row.time_label).trim()) {
+    const parsed = new Date(rawTime);
+    if (!Number.isNaN(parsed.getTime())) {
+      timeLabel = parsed.toLocaleString("en-GB", {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
   }
+  return { event_name: eventName, location, time: timeLabel, entry_fee: entryFee };
+}
+
+function renderEventsTeaser() {
+  if (!eventsTeaserName || !eventsTeaserMeta) return;
+  if (!eventsCache.length) {
+    eventsTeaserName.textContent = "NO EVENTS YET";
+    eventsTeaserMeta.textContent = "Tap to retry";
+    return;
+  }
+  const first = eventsCache[0];
+  eventsTeaserName.textContent = first.event_name;
+  eventsTeaserMeta.textContent = `${first.location} • ${first.time} • ${first.entry_fee}`;
+}
+
+function renderEventsList() {
+  if (!eventsList) return;
+  if (!eventsCache.length) {
+    eventsList.innerHTML = '<div class="meta">No events are available right now.</div>';
+    return;
+  }
+  eventsList.innerHTML = eventsCache
+    .map(function (event) {
+      return (
+        '<article class="event-row">' +
+        '<div class="name">' +
+        esc(event.event_name) +
+        "</div>" +
+        '<div class="line"><b>LOCATION</b> · ' +
+        esc(event.location) +
+        "</div>" +
+        '<div class="line"><b>TIME</b> · ' +
+        esc(event.time) +
+        "</div>" +
+        '<div class="line"><b>ENTRY</b> · ' +
+        esc(event.entry_fee) +
+        "</div></article>"
+      );
+    })
+    .join("");
+}
+
+async function loadEvents() {
+  if (!eventsTeaserName || !eventsTeaserMeta) return;
+  eventsTeaserName.textContent = "LOADING EVENTS…";
+  eventsTeaserMeta.textContent = "Checking backend";
+  try {
+    const response = await fetch(apiUrl("/api/events?limit=12"), { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Events request failed: ${response.status} ${response.statusText}`);
+    }
+    const payload = await response.json();
+    const items = Array.isArray(payload && payload.items) ? payload.items : [];
+    eventsCache = items.map(normalizeEvent);
+    renderEventsTeaser();
+    renderEventsList();
+    if (eventsMeta) {
+      eventsMeta.textContent = `${eventsCache.length} backend events loaded.`;
+    }
+  } catch (error) {
+    eventsCache = [];
+    renderEventsTeaser();
+    renderEventsList();
+    if (eventsMeta) {
+      eventsMeta.textContent = "Events are temporarily unavailable from backend.";
+    }
+    if (window.console) {
+      console.warn("GRIOT NOIR: Failed loading events.", error);
+    }
+  }
+}
+
+function updateMastMeta() {
+  const now = new Date();
+  const dateLabel = now.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase();
   if (mastDateLine) {
     mastDateLine.textContent = `${dateLabel} — PRINTED NOWHERE, READ EVERYWHERE`;
   }
@@ -312,7 +412,7 @@ function setStatus(mode, count) {
     feedStatus.classList.add("wait");
     feedStatus.innerHTML = '<i class="led"></i>FEED ▸ PRINTING…';
   }
-  updateMastMeta(mode, count);
+  updateMastMeta();
 }
 
 function showSkeletons() {
@@ -576,6 +676,10 @@ function handleInteractiveCardClick(target) {
 }
 
 document.addEventListener("click", function (ev) {
+  if (ev.target === eventsOverlay) {
+    closeEventsOverlay();
+    return;
+  }
   if (ev.target === readerOverlay) {
     closeReader();
     return;
@@ -587,8 +691,19 @@ if (readerClose) {
   readerClose.addEventListener("click", closeReader);
 }
 
+if (eventsTeaserBtn) {
+  eventsTeaserBtn.addEventListener("click", function () {
+    openEventsOverlay();
+  });
+}
+
+if (eventsCloseBtn) {
+  eventsCloseBtn.addEventListener("click", closeEventsOverlay);
+}
+
 document.addEventListener("keydown", function (ev) {
   if (ev.key === "Escape") {
+    closeEventsOverlay();
     closeReader();
     return;
   }
@@ -1078,13 +1193,14 @@ function tickClock() {
   clockCairo.textContent = fmtClock("Africa/Cairo");
   clockNairobi.textContent = fmtClock("Africa/Nairobi");
   clockJohannesburg.textContent = fmtClock("Africa/Johannesburg");
+  updateMastMeta();
 }
 
 tickClock();
 setInterval(tickClock, 10000);
-updateMastMeta("wait", 0);
 document.getElementById("yr").textContent = new Date().getFullYear();
 
 renderWall();
 loadForum();
 loadFeed();
+loadEvents();

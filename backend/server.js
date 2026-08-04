@@ -60,6 +60,74 @@ const DEFAULT_FORUM_POSTS = [
   }
 ];
 
+const PLACEHOLDER_EVENT_NAMES = [
+  "Midnight Market Sessions",
+  "Neon Street Cinema",
+  "Afrohouse Rooftop Social",
+  "Indie Zine Swap",
+  "Silent Disco Courtyard",
+  "Open Mic Under Signals",
+  "Creative Founder Mixer",
+  "Sunset Food & Vinyl",
+  "Tech Builder Night",
+  "Community Art Walk"
+];
+
+const PLACEHOLDER_EVENT_LOCATIONS = [
+  "Westlands, Nairobi",
+  "Kilimani, Nairobi",
+  "Yaba, Lagos",
+  "Victoria Island, Lagos",
+  "Maboneng, Johannesburg",
+  "Downtown, Kigali",
+  "Plateau, Abuja",
+  "Osu, Accra",
+  "CBD, Kampala",
+  "Town, Cape Town"
+];
+
+const PLACEHOLDER_ENTRY_FEES = ["FREE", "KES 500", "KES 1,000", "KES 1,500", "KES 2,000", "KES 2,500"];
+
+function formatEventTime(date) {
+  try {
+    return new Intl.DateTimeFormat("en-GB", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).format(date);
+  } catch {
+    return date.toISOString();
+  }
+}
+
+function generatePlaceholderEvents(limit = 8) {
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 8, 24));
+  const now = new Date();
+  const seed = Number(now.toISOString().slice(0, 10).replaceAll("-", "")) || 1;
+  const items = [];
+  for (let i = 0; i < safeLimit; i += 1) {
+    const dayOffset = Math.floor(i / 3);
+    const eventDate = new Date(now);
+    eventDate.setHours(16 + ((i * 3) % 7), (i % 2) * 30, 0, 0);
+    eventDate.setDate(now.getDate() + dayOffset);
+    const nameIndex = (seed + i * 7) % PLACEHOLDER_EVENT_NAMES.length;
+    const locationIndex = (seed + i * 5 + 3) % PLACEHOLDER_EVENT_LOCATIONS.length;
+    const feeIndex = (seed + i * 11) % PLACEHOLDER_ENTRY_FEES.length;
+    items.push({
+      id: `evt-${seed}-${i + 1}`,
+      event_name: PLACEHOLDER_EVENT_NAMES[nameIndex],
+      location: PLACEHOLDER_EVENT_LOCATIONS[locationIndex],
+      time: eventDate.toISOString(),
+      time_label: formatEventTime(eventDate),
+      entry_fee: PLACEHOLDER_ENTRY_FEES[feeIndex]
+    });
+  }
+  return items;
+}
+
 function roleRank(role) {
   return ROLE_LEVEL[String(role || "").toLowerCase()] || 0;
 }
@@ -1348,6 +1416,12 @@ app.get("/api/public-config", (req, res) => {
     supabase_anon_key: SUPABASE_ANON_KEY || "",
     members_enabled: !!(SUPABASE_URL && SUPABASE_ANON_KEY)
   });
+});
+
+app.get("/api/events", (req, res) => {
+  const limit = Number(req.query.limit);
+  const items = generatePlaceholderEvents(Number.isFinite(limit) ? limit : 8);
+  res.json({ items, generated_at: new Date().toISOString() });
 });
 
 app.get("/api/articles", async (req, res) => {
