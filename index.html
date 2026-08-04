@@ -68,11 +68,12 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 @keyframes brand-dot-flick{0%,18%,52%,100%{opacity:1;transform:translateX(0)}19%,24%{opacity:.18;transform:translateX(-1px)}25%,29%{opacity:1;transform:translateX(1px)}75%{opacity:.35}}
 .brand .tag{font-family:var(--marker);color:var(--acid);font-size:clamp(12px,2.8vw,15px);transform:rotate(-2deg);display:inline-block;margin-top:6px}
 .spray{position:absolute;pointer-events:none;opacity:.5;z-index:-1;width:clamp(90px,14vw,180px);left:-20px;top:-16px;color:var(--magenta)}
-.mast-right{display:flex;align-items:flex-end;gap:clamp(10px,2vw,16px)}
+.mast-right{display:flex;align-items:flex-start;gap:clamp(10px,2vw,16px);margin-left:auto}
+.mast-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .home-logo{width:clamp(64px,9vw,102px);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border:1px solid var(--line);background:#0b0b0b;padding:4px;box-shadow:4px 4px 0 rgba(0,0,0,.5);transition:transform .2s,border-color .2s,box-shadow .2s}
 .home-logo img{width:100%;height:100%;object-fit:contain;object-position:center}
 .home-logo:hover{transform:translateY(-2px);border-color:var(--cyan);box-shadow:0 0 14px rgba(34,230,240,.25)}
-.mast-account-action{position:absolute;right:var(--pad-x);top:6px;display:inline-flex;align-items:center;gap:6px;background:#0a0a12;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:6px 9px;z-index:5;transition:.2s}
+.mast-account-action{display:inline-flex;align-items:center;gap:6px;background:#0a0a12;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:6px 9px;z-index:5;transition:.2s}
 .mast-account-action svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .mast-account-action:hover{border-color:var(--acid);color:var(--acid)}
 .mast-account-action.active{border-color:var(--acid);color:#000;background:var(--acid)}
@@ -332,9 +333,9 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 @media(max-width:600px){
   .masthead{align-items:flex-start}
-  .mast-account-action{top:4px;right:var(--pad-x)}
   .mast-right{width:100%;justify-content:space-between;align-items:flex-start}
-  .mast-meta{text-align:left;flex:1;min-width:0}
+  .mast-side{align-items:flex-start}
+  .mast-meta{text-align:left;min-width:0}
   .mast-meta .clocks,.feed-status{justify-content:flex-start}
   .hero{min-height:clamp(340px,86vw,440px)}
   .sticker{padding:4px 9px}
@@ -382,22 +383,24 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <a class="home-logo" href="/" aria-label="Home">
       <img src="https://hfbdphfdxfgwmviogoif.supabase.co/storage/v1/object/public/The%20Dogon/cover%20queen.png" alt="The E. African Bazaar logo">
     </a>
-    <div class="mast-meta">
-      <div class="edition">TUESDAY EDITION // № 407</div>
-      <div class="clocks">
-        <span>LAGOS <b id="clockLagos">--:--</b></span>
-        <span>CAIRO <b id="clockCairo">--:--</b></span>
-        <span>NAIROBI <b id="clockNairobi">--:--</b></span>
-        <span>JOHANNESBURG <b id="clockJohannesburg">--:--</b></span>
+    <div class="mast-side">
+      <button class="mast-account-action" id="memberTopAccountBtn" type="button" aria-label="Open account">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        <span>ACCOUNT</span>
+      </button>
+      <div class="mast-meta">
+        <div class="edition">TUESDAY EDITION // № 407</div>
+        <div class="clocks">
+          <span>LAGOS <b id="clockLagos">--:--</b></span>
+          <span>CAIRO <b id="clockCairo">--:--</b></span>
+          <span>NAIROBI <b id="clockNairobi">--:--</b></span>
+          <span>JOHANNESBURG <b id="clockJohannesburg">--:--</b></span>
+        </div>
+        <div class="feed-status wait" id="feedStatus"><i class="led"></i>FEED ▸ PRINTING…</div>
+        <div>04 AUG 2026 — PRINTED NOWHERE, READ EVERYWHERE</div>
       </div>
-      <div class="feed-status wait" id="feedStatus"><i class="led"></i>FEED ▸ PRINTING…</div>
-      <div>04 AUG 2026 — PRINTED NOWHERE, READ EVERYWHERE</div>
     </div>
   </div>
-  <button class="mast-account-action" id="memberTopAccountBtn" type="button" aria-label="Open account">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-    <span>ACCOUNT</span>
-  </button>
 </header>
 
 <!-- NAV -->
