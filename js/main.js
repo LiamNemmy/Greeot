@@ -88,6 +88,25 @@ function imgHTML(it, alt) {
   return '<div class="ph"><img src="' + esc(it.image_url) + '" alt="' + esc(it.image_alt || alt) + '"></div>';
 }
 
+function heroTitleHTML(title) {
+  const raw = String(title || "");
+  const match = /dark/i.exec(raw);
+  if (!match) return esc(raw);
+  const start = match.index;
+  const word = raw.slice(start, start + 4);
+  const before = raw.slice(0, start);
+  const after = raw.slice(start + 4);
+  return (
+    esc(before) +
+    esc(word.slice(0, 2)) +
+    '<span class="flick-r">' +
+    esc(word.charAt(2)) +
+    "</span>" +
+    esc(word.slice(3)) +
+    esc(after)
+  );
+}
+
 function heroHTML(it) {
   const cat = (it.categories[0] || "Front Page").toUpperCase();
   const stick = hasTag(it, "investigation")
@@ -112,7 +131,7 @@ function heroHTML(it) {
     esc(cat) +
     "</span>" +
     "<h2>" +
-    esc(it.title) +
+    heroTitleHTML(it.title) +
     "</h2>" +
     (it.summary ? "<p>" + esc(it.summary) + "</p>" : "") +
     "<div class=\"meta\">BY " +

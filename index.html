@@ -58,9 +58,10 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 
 /* ---------- masthead ---------- */
 .masthead{max-width:1440px;margin:0 auto;padding:var(--sp-4) var(--pad-x) var(--sp-3);display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-3);flex-wrap:wrap;position:relative}
-.brand{position:relative;line-height:.85;min-width:0}
-.brand h1{font-family:var(--display);font-size:clamp(46px,11vw,96px);letter-spacing:2px;
+.brand{position:relative;line-height:.85;min-width:0;flex:0 1 clamp(180px,26vw,300px)}
+.brand h1{font-family:var(--display);font-size:clamp(42px,9.8vw,90px);letter-spacing:1.5px;
   text-shadow:3px 3px 0 var(--magenta),6px 6px 0 rgba(34,230,240,.55)}
+.brand h1 span{display:block}
 .brand h1 .flick{animation:flick 4s linear infinite}
 @keyframes flick{0%,6%,8%,100%{opacity:1}7%{opacity:.2}42%{opacity:1}43%{opacity:.3}44%{opacity:1}}
 .brand .tag{font-family:var(--marker);color:var(--acid);font-size:clamp(12px,2.8vw,15px);transform:rotate(-2deg);display:inline-block;margin-top:6px}
@@ -144,6 +145,8 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .hero p{margin-top:clamp(8px,1.8vw,14px);max-width:56ch;color:#cfcfdd;font-size:clamp(12.5px,1.8vw,14px);line-height:1.7}
 .hero .meta{margin-top:clamp(8px,1.8vw,14px)}
 .hero .meta b{color:var(--cyan);font-weight:400}
+.hero .flick-r{display:inline-block;animation:flick-r 1.3s steps(2) infinite;text-shadow:0 0 8px rgba(255,46,136,.9),2px 0 0 rgba(34,230,240,.5)}
+@keyframes flick-r{0%,12%,18%,68%,100%{opacity:1}13%,16%{opacity:.15}70%{opacity:.35}}
 .scribble{position:absolute;right:clamp(14px,3vw,26px);top:clamp(14px,3vw,22px);z-index:3;font-family:var(--marker);color:var(--acid);font-size:clamp(13px,2.2vw,16px);transform:rotate(6deg);text-align:right}
 .scribble svg{display:block;margin:4px 0 0 auto}
 @media(max-width:720px){.scribble{display:none}}
@@ -367,7 +370,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 <header class="masthead">
   <svg class="spray" viewBox="0 0 200 200"><g fill="currentColor"><circle cx="100" cy="100" r="46"/><circle cx="150" cy="70" r="12"/><circle cx="160" cy="120" r="8"/><circle cx="50" cy="60" r="10"/><circle cx="40" cy="140" r="14"/><circle cx="130" cy="160" r="7"/><circle cx="70" cy="170" r="5"/><circle cx="170" cy="40" r="4"/></g></svg>
   <div class="brand">
-    <h1>The E. African Bazaar</h1>
+    <h1><span>The E.</span><span>African</span><span>Bazaar</span></h1>
     <span class="tag">The world, from Africa</span>
   </div>
   <div class="mast-right">
