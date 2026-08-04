@@ -60,3 +60,9 @@ npm run cap:open:ios
 - Android: run on emulator/device from Android Studio after `cap:sync`.
 - iOS: run on simulator/device from Xcode after `cap:sync` (macOS only).
 - Re-run `npm run cap:sync` whenever web assets or Capacitor config change.
+
+## Launch splash behavior
+
+- Native launch splash is configured in `capacitor.config.js` (`plugins.SplashScreen`).
+- `js/mobile-splash.js` hides the native splash once the web page fully loads on native platforms.
+- If you tune splash visuals or timing, run `npm run cap:sync` before rebuilding/running native apps.

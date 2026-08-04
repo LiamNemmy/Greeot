@@ -10,6 +10,17 @@ const config = {
   appId: "com.greeot.mobile",
   appName: "Greeot Mobile",
   webDir: "mobile-web",
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+      backgroundColor: "#0b0b0bff",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
+      splashFullScreen: true,
+      splashImmersive: true
+    }
+  },
   ...(serverUrl
     ? {
         server: {
