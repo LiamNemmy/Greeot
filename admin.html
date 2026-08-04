@@ -55,6 +55,9 @@ button:hover{background:var(--acid)}
 .tax-pill:hover{border-color:var(--cyan);color:var(--cyan);background:#080812}
 .tax-pill.active{background:var(--acid);border-color:var(--acid);color:#000}
 .tax-note{margin-top:6px;font-size:10px;letter-spacing:.4px;color:var(--dim)}
+.inline-media-tools{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-top:8px}
+.inline-media-tools button{align-self:end}
+@media(max-width:980px){.inline-media-tools{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -121,6 +124,18 @@ button:hover{background:var(--acid)}
           <div class="field">
             <label for="articleBody">Full content</label>
             <textarea id="articleBody" style="min-height:180px"></textarea>
+            <div class="inline-media-tools">
+              <div class="field" style="margin-bottom:0">
+                <label for="inlineImageUrl">Inline image URL</label>
+                <input id="inlineImageUrl" type="url" placeholder="https://...">
+              </div>
+              <div class="field" style="margin-bottom:0">
+                <label for="inlineImageAlt">Inline image caption/alt</label>
+                <input id="inlineImageAlt" type="text" placeholder="Photo caption">
+              </div>
+              <button id="insertInlineImageBtn" class="btn-muted" type="button">Insert image block</button>
+            </div>
+            <div class="tax-note">Inline syntax: ![caption](https://image-url) on its own paragraph.</div>
           </div>
           <div class="row">
             <div class="field">

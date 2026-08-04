@@ -312,22 +312,47 @@ function setArticleLookup(items) {
   articleLookup = next;
 }
 
-function storyParagraphs(article) {
-  const raw = article.full_content ?? article.body ?? article.content;
-  if (Array.isArray(raw)) {
-    return raw.map(String).map((p) => p.trim()).filter(Boolean);
+function parseInlineImageBlock(blockText) {
+  const match = String(blockText || "").trim().match(/^!\[(.*?)\]\((.+)\)$/);
+  if (!match) return null;
+  const alt = String(match[1] || "").trim();
+  const rawUrl = String(match[2] || "").trim();
+  if (!rawUrl) return null;
+  let parsed;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    return null;
   }
-  if (typeof raw === "string" && raw.trim()) {
-    return raw
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    return null;
+  }
+  return { type: "image", url: parsed.toString(), alt };
+}
+
+function storyBlocks(article) {
+  const raw = article.full_content ?? article.body ?? article.content;
+  const textBlocks = [];
+  if (Array.isArray(raw)) {
+    textBlocks.push(...raw.map(String).map((p) => p.trim()).filter(Boolean));
+  } else if (typeof raw === "string" && raw.trim()) {
+    textBlocks.push(
+      ...raw
       .split(/\n\s*\n/)
       .map((p) => p.trim())
-      .filter(Boolean);
+      .filter(Boolean)
+    );
+  } else {
+    if (article.summary) textBlocks.push(article.summary);
+    if (article.subtitle) textBlocks.push(article.subtitle);
+    textBlocks.push("Longform text is not attached to this story yet. Add content/body/full_content in your data source.");
   }
-  const fallback = [];
-  if (article.summary) fallback.push(article.summary);
-  if (article.subtitle) fallback.push(article.subtitle);
-  fallback.push("Longform text is not attached to this story yet. Add content/body/full_content in your data source.");
-  return fallback;
+
+  return textBlocks.map((blockText) => {
+    const inlineImage = parseInlineImageBlock(blockText);
+    if (inlineImage) return inlineImage;
+    return { type: "paragraph", text: blockText };
+  });
 }
 
 function openReader(articleId) {
@@ -350,9 +375,14 @@ function openReader(articleId) {
   readerMeta.innerHTML =
     "BY " + bylineHTML(article.creators) + " · " + fmtDate(article.published_at) + " · " + esc((article.type || "story").toUpperCase());
 
-  readerBody.innerHTML = storyParagraphs(article)
-    .map(function (paragraph) {
-      return "<p>" + esc(paragraph) + "</p>";
+  readerBody.innerHTML = storyBlocks(article)
+    .map(function (block) {
+      if (block.type === "image") {
+        const altText = block.alt || article.title || "Dispatch image";
+        const caption = block.alt ? "<figcaption>" + esc(block.alt) + "</figcaption>" : "";
+        return '<figure class="reader-inline-media"><img src="' + esc(block.url) + '" alt="' + esc(altText) + '">' + caption + "</figure>";
+      }
+      return "<p>" + esc(block.text || "") + "</p>";
     })
     .join("");
 

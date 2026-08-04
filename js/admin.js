@@ -14,6 +14,9 @@ const articleTitle = document.getElementById("articleTitle");
 const articleSubtitle = document.getElementById("articleSubtitle");
 const articleSummary = document.getElementById("articleSummary");
 const articleBody = document.getElementById("articleBody");
+const inlineImageUrl = document.getElementById("inlineImageUrl");
+const inlineImageAlt = document.getElementById("inlineImageAlt");
+const insertInlineImageBtn = document.getElementById("insertInlineImageBtn");
 const articleType = document.getElementById("articleType");
 const articleCategories = document.getElementById("articleCategories");
 const articleTags = document.getElementById("articleTags");
@@ -136,6 +139,45 @@ function renderTaxonomyPicker(targetEl, inputEl, options) {
 function renderTaxonomyPickers() {
   renderTaxonomyPicker(categoryPicker, articleCategories, collectTaxonomyOptions("categories", DEFAULT_CATEGORIES));
   renderTaxonomyPicker(tagPicker, articleTags, collectTaxonomyOptions("tags", DEFAULT_TAGS));
+}
+
+function normalizeInlineImageUrl(value) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    throw new Error("Inline image URL is required.");
+  }
+  let parsed;
+  try {
+    parsed = new URL(raw);
+  } catch {
+    throw new Error("Inline image URL must be a valid URL.");
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("Inline image URL must use http or https.");
+  }
+  return parsed.toString();
+}
+
+function sanitizeInlineAlt(value) {
+  return String(value || "")
+    .replace(/[\[\]\(\)]/g, "")
+    .trim()
+    .slice(0, 300);
+}
+
+function insertInlineImageMarkdown() {
+  const url = normalizeInlineImageUrl(inlineImageUrl.value);
+  const alt = sanitizeInlineAlt(inlineImageAlt.value) || "Inline image";
+  const block = `![${alt}](${url})`;
+  const text = articleBody.value || "";
+  const start = Number.isFinite(articleBody.selectionStart) ? articleBody.selectionStart : text.length;
+  const end = Number.isFinite(articleBody.selectionEnd) ? articleBody.selectionEnd : start;
+  const before = text.slice(0, start).replace(/\s*$/, "");
+  const after = text.slice(end).replace(/^\s*/, "");
+  articleBody.value = `${before}${before ? "\n\n" : ""}${block}${after ? "\n\n" : ""}${after}`;
+  const nextPos = (before ? before.length + 2 : 0) + block.length;
+  articleBody.focus();
+  articleBody.setSelectionRange(nextPos, nextPos);
 }
 
 function statusTagClass(status) {
@@ -520,6 +562,14 @@ if (tagPicker) {
 
 articleCategories.addEventListener("input", renderTaxonomyPickers);
 articleTags.addEventListener("input", renderTaxonomyPickers);
+insertInlineImageBtn.addEventListener("click", () => {
+  try {
+    insertInlineImageMarkdown();
+    setStatus("Inline image block inserted.");
+  } catch (error) {
+    setStatus(error.message || "Failed to insert inline image.", true);
+  }
+});
 
 (async function boot() {
   resetArticleForm();
