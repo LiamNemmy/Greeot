@@ -99,12 +99,20 @@ function heroTitleHTML(title) {
   return (
     esc(before) +
     esc(word.slice(0, 2)) +
-    '<span class="flick-r">' +
+    '<span class="hero-dark-r">' +
     esc(word.charAt(2)) +
     "</span>" +
     esc(word.slice(3)) +
     esc(after)
   );
+}
+
+function applyHeroDarkFlicker() {
+  const heroTitleEl = slotHero && slotHero.querySelector(".hero h2");
+  if (!heroTitleEl) return;
+  const rawTitle = String(heroTitleEl.textContent || "");
+  if (!/dark/i.test(rawTitle)) return;
+  heroTitleEl.innerHTML = heroTitleHTML(rawTitle);
 }
 
 function heroHTML(it) {
@@ -488,6 +496,7 @@ function renderFeed(items, mode) {
   setArticleLookup(items);
 
   slotHero.innerHTML = heroItem ? heroHTML(heroItem) : "";
+  applyHeroDarkFlicker();
   slotDuo.innerHTML = duoArr.map(duoHTML).join("");
   slotAnalysis.innerHTML = deskArr.map(deskHTML).join("");
   slotOpinion.innerHTML = opEd ? opinionHTML(opEd) : "";

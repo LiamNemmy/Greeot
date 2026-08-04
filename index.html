@@ -145,8 +145,8 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .hero p{margin-top:clamp(8px,1.8vw,14px);max-width:56ch;color:#cfcfdd;font-size:clamp(12.5px,1.8vw,14px);line-height:1.7}
 .hero .meta{margin-top:clamp(8px,1.8vw,14px)}
 .hero .meta b{color:var(--cyan);font-weight:400}
-.hero .flick-r{display:inline-block;animation:flick-r 1.3s steps(2) infinite;text-shadow:0 0 8px rgba(255,46,136,.9),2px 0 0 rgba(34,230,240,.5)}
-@keyframes flick-r{0%,12%,18%,68%,100%{opacity:1}13%,16%{opacity:.15}70%{opacity:.35}}
+.hero .hero-dark-r{display:inline-block;animation:flick-r .7s steps(2,end) infinite;color:var(--acid);text-shadow:0 0 10px rgba(216,255,62,.9),2px 0 0 rgba(255,46,136,.8)}
+@keyframes flick-r{0%,32%,58%,100%{opacity:1;transform:translateX(0)}33%,37%{opacity:.08;transform:translateX(-1px)}38%,42%{opacity:1;transform:translateX(1px)}70%{opacity:.25}}
 .scribble{position:absolute;right:clamp(14px,3vw,26px);top:clamp(14px,3vw,22px);z-index:3;font-family:var(--marker);color:var(--acid);font-size:clamp(13px,2.2vw,16px);transform:rotate(6deg);text-align:right}
 .scribble svg{display:block;margin:4px 0 0 auto}
 @media(max-width:720px){.scribble{display:none}}
@@ -572,7 +572,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./js/mobile-splash.js"></script>
-<script type="module" src="./js/main.js"></script>
+<script type="module" src="./js/main.js?v=20260805-hero-flicker-fix"></script>
 <script type="module" src="./js/member-features.js"></script>
 </body>
 </html>
