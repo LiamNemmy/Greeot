@@ -1007,8 +1007,9 @@ wireForm.addEventListener("submit", function (ev) {
 });
 
 const clockLagos = document.getElementById("clockLagos");
-const clockLondon = document.getElementById("clockLdn");
-const clockNewYork = document.getElementById("clockNy");
+const clockCairo = document.getElementById("clockCairo");
+const clockNairobi = document.getElementById("clockNairobi");
+const clockJohannesburg = document.getElementById("clockJohannesburg");
 
 function fmtClock(timeZone) {
   try {
@@ -1020,8 +1021,9 @@ function fmtClock(timeZone) {
 
 function tickClock() {
   clockLagos.textContent = fmtClock("Africa/Lagos");
-  clockLondon.textContent = fmtClock("Europe/London");
-  clockNewYork.textContent = fmtClock("America/New_York");
+  clockCairo.textContent = fmtClock("Africa/Cairo");
+  clockNairobi.textContent = fmtClock("Africa/Nairobi");
+  clockJohannesburg.textContent = fmtClock("Africa/Johannesburg");
 }
 
 tickClock();
