@@ -9,6 +9,8 @@
     "test": "echo \"No test suite configured\"",
     "cap:target:lan": "node scripts/set-mobile-lan-env.js",
     "cap:target:emulator": "node scripts/set-mobile-emulator-env.js",
+    "cap:logo:url": "node scripts/fetch-mobile-logo.js",
+    "cap:assets": "npx @capacitor/assets generate --android --ios --assetPath assets --iconBackgroundColor \"#0b0b0b\" --iconBackgroundColorDark \"#0b0b0b\" --splashBackgroundColor \"#0b0b0b\" --splashBackgroundColorDark \"#0b0b0b\" --logoSplashScale 0.24",
     "cap:prepare:web": "node scripts/prepare-mobile-web.js",
     "cap:copy": "npm run cap:prepare:web && npx cap copy",
     "cap:sync": "npm run cap:prepare:web && npx cap sync",
@@ -32,6 +34,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.5.0"
   }
 }

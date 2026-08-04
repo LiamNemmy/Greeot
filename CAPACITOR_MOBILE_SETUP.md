@@ -66,6 +66,17 @@ npm run cap:target:lan
 npm run cap:target:emulator
 ```
 
+6. (Optional) Replace mobile icon/splash branding:
+
+```bash
+# Use default in-repo branding source
+npm run cap:assets
+
+# Or download your own PNG first, then regenerate assets
+npm run cap:logo:url -- "https://your-cdn.example/your-logo.png"
+npm run cap:assets
+```
+
 ## Build and test
 
 - Android: run on emulator/device from Android Studio after `cap:sync`.
@@ -77,6 +88,7 @@ npm run cap:target:emulator
 - Native launch splash is configured in `capacitor.config.js` (`plugins.SplashScreen`).
 - Splash auto-hides after a bounded duration, so an unreachable hosted URL does not trap users on an infinite loading screen.
 - `js/mobile-splash.js` still requests early hide once the web page is fully loaded on native platforms.
+- Generated native icon/splash assets come from `assets/logo.svg` or `assets/logo.png` via `npm run cap:assets`.
 - If you tune splash visuals or timing, run `npm run cap:sync` before rebuilding/running native apps.
 
 ## Real-phone checklist (local backend)
