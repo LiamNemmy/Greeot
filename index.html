@@ -64,8 +64,8 @@ button{font-family:inherit;cursor:pointer;touch-action:manipulation}
 .brand h1 span{display:block}
 .brand h1 .flick{animation:flick 4s linear infinite}
 @keyframes flick{0%,6%,8%,100%{opacity:1}7%{opacity:.2}42%{opacity:1}43%{opacity:.3}44%{opacity:1}}
-.brand .bazaar-flick{display:inline-block;animation:bazaar-flick .95s steps(2,end) infinite;color:var(--acid);text-shadow:0 0 10px rgba(216,255,62,.9),2px 0 0 rgba(255,46,136,.7)}
-@keyframes bazaar-flick{0%,18%,52%,100%{opacity:1;transform:translateX(0)}19%,24%{opacity:.18;transform:translateX(-1px)}25%,29%{opacity:1;transform:translateX(1px)}75%{opacity:.35}}
+.brand .brand-dot-flick{display:inline-block;animation:brand-dot-flick .95s steps(2,end) infinite;color:var(--acid);text-shadow:0 0 10px rgba(216,255,62,.9),2px 0 0 rgba(255,46,136,.7)}
+@keyframes brand-dot-flick{0%,18%,52%,100%{opacity:1;transform:translateX(0)}19%,24%{opacity:.18;transform:translateX(-1px)}25%,29%{opacity:1;transform:translateX(1px)}75%{opacity:.35}}
 .brand .tag{font-family:var(--marker);color:var(--acid);font-size:clamp(12px,2.8vw,15px);transform:rotate(-2deg);display:inline-block;margin-top:6px}
 .spray{position:absolute;pointer-events:none;opacity:.5;z-index:-1;width:clamp(90px,14vw,180px);left:-20px;top:-16px;color:var(--magenta)}
 .mast-right{display:flex;align-items:flex-end;gap:clamp(10px,2vw,16px)}
@@ -375,7 +375,7 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 <header class="masthead">
   <svg class="spray" viewBox="0 0 200 200"><g fill="currentColor"><circle cx="100" cy="100" r="46"/><circle cx="150" cy="70" r="12"/><circle cx="160" cy="120" r="8"/><circle cx="50" cy="60" r="10"/><circle cx="40" cy="140" r="14"/><circle cx="130" cy="160" r="7"/><circle cx="70" cy="170" r="5"/><circle cx="170" cy="40" r="4"/></g></svg>
   <div class="brand">
-    <h1><span>The E.</span><span>African</span><span>Bazaa<span class="bazaar-flick">r</span></span></h1>
+    <h1><span>The E<span class="brand-dot-flick">.</span></span><span>African</span><span>Bazaar</span></h1>
     <span class="tag">The world, from Africa</span>
   </div>
   <div class="mast-right">
