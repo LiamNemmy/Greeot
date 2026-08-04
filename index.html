@@ -333,10 +333,12 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 @media(max-width:600px){
   .masthead{align-items:flex-start}
-  .mast-right{width:100%;justify-content:space-between;align-items:flex-start}
-  .mast-side{align-items:flex-start}
-  .mast-meta{text-align:left;min-width:0}
-  .mast-meta .clocks,.feed-status{justify-content:flex-start}
+  .brand{flex:1 1 100%}
+  .mast-right{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;column-gap:12px}
+  .home-logo{justify-self:start}
+  .mast-side{justify-self:end;align-items:flex-end;max-width:min(72vw,300px)}
+  .mast-meta{text-align:right;min-width:0;max-width:100%}
+  .mast-meta .clocks,.feed-status{justify-content:flex-end}
   .hero{min-height:clamp(340px,86vw,440px)}
   .sticker{padding:4px 9px}
   .opinion{flex-direction:column;align-items:flex-start;gap:12px}
