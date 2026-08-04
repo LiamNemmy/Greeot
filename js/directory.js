@@ -56,8 +56,20 @@ function render(items) {
         .slice(0, 2)
         .map((name) => `<span class="chip">${esc(name)}</span>`)
         .join(" ");
+      const hasImage = !!item.image_url;
+      const bgImage = hasImage
+        ? '<img class="card-bg-img" src="' +
+          esc(item.image_url) +
+          '" alt="' +
+          esc(item.image_alt || item.title || "Dispatch image") +
+          '" loading="lazy">'
+        : "";
       return (
-        '<article class="card">' +
+        '<article class="card' +
+        (hasImage ? " has-image" : "") +
+        '">' +
+        bgImage +
+        '<div class="card-content">' +
         "<h2>" +
         esc(item.title || "Untitled dispatch") +
         "</h2>" +
@@ -68,6 +80,7 @@ function render(items) {
         esc(fmtDate(item.published_at)) +
         "</div>" +
         chips +
+        "</div>" +
         "</article>"
       );
     })
