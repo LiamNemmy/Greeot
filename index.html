@@ -90,6 +90,10 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .nav-tools{margin-left:auto;display:flex;align-items:center;gap:8px;padding:8px 0;flex:0 0 auto}
 .nav-tools .admin-link{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
 .nav-tools .admin-link:hover{border-color:var(--cyan);color:var(--cyan)}
+.nav-tools .member-btn{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
+.nav-tools .member-btn:hover{border-color:var(--acid);color:var(--acid)}
+.nav-tools .member-btn.active{border-color:var(--acid);color:#000;background:var(--acid)}
+.nav-tools .member-chip{font-family:var(--mono);font-size:10px;letter-spacing:.5px;color:var(--cyan);border:1px solid var(--line);padding:7px 10px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #clearFilter{display:none;background:var(--acid);color:#000;border:none;font-family:var(--black);font-size:9px;letter-spacing:1px;padding:6px 8px;transform:rotate(-2deg)}
 #clearFilter.show{display:inline-block}
 #siteSearch{background:#0a0a12;border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:12px;padding:8px 10px;width:clamp(104px,26vw,170px);outline:none;transition:.2s}
@@ -117,6 +121,7 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .interactive-article:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .card-read{margin-top:12px;background:transparent;border:1px solid var(--cyan);color:var(--cyan);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
 .card-read:hover{background:var(--cyan);color:#000}
+.member-bookmark-btn{margin-top:8px}
 
 /* ---------- skeletons ---------- */
 .skel{background:linear-gradient(100deg,#0e0e17 40%,#181828 50%,#0e0e17 60%);background-size:200% 100%;animation:shimmer 1.2s linear infinite;border:1px solid var(--line)}
@@ -265,8 +270,36 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,7,12,.94);backdrop-filter
 .reader-sub{margin-top:8px;color:var(--dim);font-size:clamp(12px,1.8vw,14px)}
 .reader-media{margin-top:14px;border:1px solid var(--line);aspect-ratio:16/9;overflow:hidden;background:var(--panel2)}
 .reader-meta{margin-top:12px;color:var(--dim);font-size:10px;letter-spacing:1px}
+.reader-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.reader-bookmark{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px;transition:.2s}
+.reader-bookmark:hover{border-color:var(--acid);color:var(--acid)}
+.reader-bookmark.saved{background:var(--acid);border-color:var(--acid);color:#000}
 .reader-body{margin-top:14px;display:grid;gap:12px}
 .reader-body p{line-height:1.75;font-size:clamp(12px,1.7vw,14px);color:#dfdee9}
+.reader-comments{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.reader-comments h3{font-family:var(--display);font-size:clamp(18px,3vw,24px);letter-spacing:1px}
+.reader-comments-note{margin-top:8px;color:var(--dim);font-size:12px;line-height:1.6}
+.reader-comment-form{margin-top:10px;display:grid;gap:8px}
+.reader-comment-form textarea{min-height:84px;resize:vertical;background:#0a0a12;border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:12px;padding:10px;outline:none}
+.reader-comment-form textarea:focus{border-color:var(--cyan)}
+.reader-comment-form button{justify-self:start;background:var(--magenta);border:none;color:#000;font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 11px}
+.reader-comment-list{margin-top:12px;display:grid;gap:10px}
+.reader-comment-item{background:var(--panel2);border:1px solid var(--line);padding:10px}
+.reader-comment-item .meta{margin-top:6px}
+.auth-overlay{position:fixed;inset:0;background:rgba(5,5,10,.88);backdrop-filter:blur(2px);z-index:90;display:flex;align-items:center;justify-content:center;padding:clamp(12px,3vw,24px)}
+.auth-card{width:min(460px,100%);background:var(--panel);border:1px solid var(--line);padding:clamp(16px,3vw,22px)}
+.auth-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.auth-head h2{font-family:var(--display);font-size:clamp(26px,4vw,34px);letter-spacing:1px;line-height:1}
+.auth-close{background:#000;border:1px solid var(--line);color:var(--text);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px}
+.auth-close:hover{border-color:var(--cyan);color:var(--cyan)}
+.auth-form{margin-top:12px;display:grid;gap:8px}
+.auth-form input{width:100%;background:#0a0a12;border:1px solid var(--line);color:var(--text);font-family:var(--mono);font-size:12px;padding:10px;outline:none}
+.auth-form input:focus{border-color:var(--cyan)}
+.auth-submit{background:var(--acid);border:none;color:#000;font-family:var(--black);font-size:10px;letter-spacing:1px;padding:9px 11px}
+.auth-links{display:flex;gap:8px;flex-wrap:wrap}
+.auth-link{background:transparent;border:1px solid var(--line);color:var(--dim);font-family:var(--black);font-size:10px;letter-spacing:1px;padding:7px 10px}
+.auth-link:hover{border-color:var(--cyan);color:var(--cyan)}
+.auth-message{margin-top:10px;font-size:11px;line-height:1.5;color:var(--dim)}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
@@ -350,6 +383,10 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <button class="cat-btn" data-cat="opinion">OPINION</button>
     <div class="nav-tools">
       <a class="admin-link" href="/admin">CMS</a>
+      <button class="member-btn" id="memberSavedBtn" type="button">SAVED</button>
+      <span class="member-chip gone" id="memberChip"></span>
+      <button class="member-btn" id="memberAuthBtn" type="button">SIGN IN</button>
+      <button class="member-btn gone" id="memberLogoutBtn" type="button">LOG OUT</button>
       <button id="clearFilter">✕ CLEAR FILTER</button>
       <input id="siteSearch" type="search" placeholder="search the wire…" aria-label="search stories">
     </div>
@@ -443,7 +480,49 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
     <p class="reader-sub" id="readerSubtitle"></p>
     <div class="reader-media gone" id="readerMedia"></div>
     <div class="reader-meta" id="readerMeta"></div>
+    <div class="reader-actions" id="readerActions">
+      <button class="reader-bookmark" id="readerBookmarkBtn" type="button" data-bookmark-article="">☆ SAVE DISPATCH</button>
+    </div>
     <div class="reader-body" id="readerBody"></div>
+    <section class="reader-comments" id="readerComments">
+      <h3>READER COMMENTS</h3>
+      <p class="reader-comments-note" id="readerCommentsNote">Sign in to join the conversation.</p>
+      <form class="reader-comment-form gone" id="readerCommentForm">
+        <textarea id="readerCommentInput" maxlength="2000" placeholder="Drop a sharp take. Keep it clean." aria-label="comment text"></textarea>
+        <button type="submit">POST COMMENT</button>
+      </form>
+      <div class="reader-comment-list" id="readerCommentList"></div>
+    </section>
+  </article>
+</div>
+
+<div class="auth-overlay gone" id="authOverlay" aria-hidden="true">
+  <article class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-head">
+      <h2 id="authTitle">MEMBER SIGN IN</h2>
+      <button class="auth-close" id="authCloseBtn" type="button">✕ CLOSE</button>
+    </div>
+    <form class="auth-form" id="authForm">
+      <input id="authEmail" type="email" required placeholder="you@example.com" aria-label="email">
+      <input id="authPassword" type="password" required minlength="8" placeholder="password (8+ chars)" aria-label="password">
+      <button class="auth-submit" id="authSubmitBtn" type="submit">SIGN IN</button>
+    </form>
+    <div class="auth-links">
+      <button class="auth-link" id="authModeToggleBtn" type="button">CREATE ACCOUNT</button>
+      <button class="auth-link" id="authResetBtn" type="button">RESET PASSWORD</button>
+    </div>
+    <p class="auth-message" id="authMessage"></p>
+  </article>
+</div>
+
+<div class="auth-overlay gone" id="savedOverlay" aria-hidden="true">
+  <article class="auth-card" role="dialog" aria-modal="true" aria-labelledby="savedTitle">
+    <div class="auth-head">
+      <h2 id="savedTitle">SAVED DISPATCHES</h2>
+      <button class="auth-close" id="savedCloseBtn" type="button">✕ CLOSE</button>
+    </div>
+    <p class="auth-message" id="savedMeta">Sign in to save and revisit dispatches.</p>
+    <div class="reader-comment-list" id="savedList"></div>
   </article>
 </div>
 
@@ -466,5 +545,6 @@ footer{border-top:1px solid var(--line);background:#05050a;margin-top:20px}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script type="module" src="./js/main.js"></script>
+<script type="module" src="./js/member-features.js"></script>
 </body>
 </html>

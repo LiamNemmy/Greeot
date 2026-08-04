@@ -359,6 +359,11 @@ function openReader(articleId) {
   readerOverlay.classList.remove("gone");
   readerOverlay.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+  document.dispatchEvent(
+    new CustomEvent("griot:reader-open", {
+      detail: { articleId, article }
+    })
+  );
 }
 
 function closeReader() {
@@ -366,6 +371,7 @@ function closeReader() {
   readerOverlay.classList.add("gone");
   readerOverlay.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
+  document.dispatchEvent(new CustomEvent("griot:reader-close"));
 }
 
 function renderFeed(items, mode) {
@@ -447,6 +453,11 @@ function renderFeed(items, mode) {
   setStatus(mode, items.length);
   renderForum();
   applyFilters();
+  document.dispatchEvent(
+    new CustomEvent("griot:feed-rendered", {
+      detail: { items, mode }
+    })
+  );
 }
 
 function renderFeedError(error) {
@@ -466,6 +477,11 @@ function renderFeedError(error) {
   cultureHead.classList.add("gone");
   slotZine.classList.add("gone");
   renderForum();
+  document.dispatchEvent(
+    new CustomEvent("griot:feed-rendered", {
+      detail: { items: [], mode: "error", error: error && error.message ? error.message : "" }
+    })
+  );
 }
 
 async function loadFeed() {
@@ -523,6 +539,12 @@ document.addEventListener("keydown", function (ev) {
   if (!active || !active.classList || !active.classList.contains("interactive-article")) return;
   ev.preventDefault();
   const articleId = active.getAttribute("data-article-id");
+  if (articleId) openReader(articleId);
+});
+
+document.addEventListener("griot:open-article", function (ev) {
+  const detail = ev && ev.detail ? ev.detail : {};
+  const articleId = detail.articleId;
   if (articleId) openReader(articleId);
 });
 
